@@ -18,7 +18,7 @@ index d2a77b4ca343d19e1c70afe3f3906a9bd53d0eec..12fbca641932458df554060165a26d8c
                          }
                      }
 diff --git a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
-index 67b88da702b780f79c0496cb17f1e6f1f8dd6c2b..a45244c9081e3e503930c7d8b56a318a05d7439f 100644
+index 67b88da702b780f79c0496cb17f1e6f1f8dd6c2b..62fffc32ccdfdbe86aa6b58ca40360dd901d4017 100644
 --- a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
 +++ b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
 @@ -482,7 +482,7 @@ public class MapItemSavedData extends SavedData {
@@ -26,7 +26,7 @@ index 67b88da702b780f79c0496cb17f1e6f1f8dd6c2b..a45244c9081e3e503930c7d8b56a318a
              }
  
 -            if (!this.isTrackedCountOverLimit(256)) {
-+            if (!this.isTrackedCountOverLimit(io.papermc.paper.configuration.GlobalConfiguration.get().misc.maxMapDecorationLimit)) {
++            if (!this.isTrackedCountOverLimit(io.papermc.paper.configuration.GlobalConfiguration.get().misc.maxMapDecorationLimit)) { // Paper
                  this.bannerMarkers.put(mapiconbanner.getId(), mapiconbanner);
                  this.addDecoration(mapiconbanner.getDecoration(), world, mapiconbanner.getId(), d0, d1, 180.0D, mapiconbanner.getName());
                  return true;
