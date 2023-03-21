@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Shane Freeder <theboyetronic@gmail.com>
+Date: Tue, 21 Mar 2023 23:51:46 +0000
+Subject: [PATCH] disable forced empty world ticks
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..65e1fa1d6f7e86ef9afe49d852fd3f79338f73af 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -691,7 +691,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+         timings.doSounds.stopTiming(); // Spigot
+         this.handlingTick = false;
+         gameprofilerfiller.pop();
+-        boolean flag = true || !this.players.isEmpty() || !this.getForcedChunks().isEmpty(); // CraftBukkit - this prevents entity cleanup, other issues on servers with no players
++        boolean flag = /*true || */!this.players.isEmpty() || !this.getForcedChunks().isEmpty(); // CraftBukkit - this prevents entity cleanup, other issues on servers with no players // Paper - restore this
+ 
+         if (flag) {
+             this.resetEmptyTime();
