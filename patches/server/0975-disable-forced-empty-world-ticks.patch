@@ -5,7 +5,7 @@ Subject: [PATCH] disable forced empty world ticks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 5a5ff40df37db9cbd53c584ed26a3ce4888b29c0..65e1fa1d6f7e86ef9afe49d852fd3f79338f73af 100644
+index 536bedfe50288ef18468c71d41a6f0f82619f72d..c38d1a01499e2897e4a0f9e8bc31344729f382f9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -691,7 +691,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
