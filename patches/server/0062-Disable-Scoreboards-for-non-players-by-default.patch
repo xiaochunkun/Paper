@@ -11,26 +11,26 @@ So avoid looking up scoreboards and short circuit to the "not on a team"
 logic which is most likely to be true.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a29f831eca7191f3145477e88921f8f972e580a9..fe003518ac0f884115af0ce0822a3382c274597a 100644
+index faf60cc9c4a3bfd7c30b07bb1b3fbabaaffd1d6d..47369a5cdf37872fa91daf6425f7cfacbbdeec69 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -2681,6 +2681,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -2805,6 +2805,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
  
      @Nullable
      public Team getTeam() {
-+        if (!this.level.paperConfig().scoreboards.allowNonPlayerEntitiesOnScoreboards && !(this instanceof Player)) { return null; } // Paper
-         return this.level.getScoreboard().getPlayersTeam(this.getScoreboardName());
++        if (!this.level().paperConfig().scoreboards.allowNonPlayerEntitiesOnScoreboards && !(this instanceof Player)) { return null; } // Paper
+         return this.level().getScoreboard().getPlayersTeam(this.getScoreboardName());
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 38495e221f0b0584ec8fcd04cd6cd98c2cfa9d10..202eed643693363aa1c052f468d6bd15bb072ff8 100644
+index fcc82ba0c632362285903bcdcc6c65069419f295..a8835f87a8961dd8c32dc9b17b8656ee12c23f96 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -816,6 +816,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -834,6 +834,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
          if (nbt.contains("Team", 8)) {
              String s = nbt.getString("Team");
-             PlayerTeam scoreboardteam = this.level.getScoreboard().getPlayerTeam(s);
-+            if (!level.paperConfig().scoreboards.allowNonPlayerEntitiesOnScoreboards && !(this instanceof net.minecraft.world.entity.player.Player)) { scoreboardteam = null; } // Paper
-             boolean flag = scoreboardteam != null && this.level.getScoreboard().addPlayerToTeam(this.getStringUUID(), scoreboardteam);
+             PlayerTeam scoreboardteam = this.level().getScoreboard().getPlayerTeam(s);
++            if (!this.level().paperConfig().scoreboards.allowNonPlayerEntitiesOnScoreboards && !(this instanceof net.minecraft.world.entity.player.Player)) { scoreboardteam = null; } // Paper
+             boolean flag = scoreboardteam != null && this.level().getScoreboard().addPlayerToTeam(this.getStringUUID(), scoreboardteam);
  
              if (!flag) {

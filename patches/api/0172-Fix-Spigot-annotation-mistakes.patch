@@ -9,10 +9,21 @@ a ton of noise to plugin developers.
 These do not help plugin developers if they bring moise noise than value.
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index c02b663ab711daa06de054a92f09485231824458..befbbefc97abbac819f4034e3df62f8437844c39 100644
+index 71cd6f405c35e1e1a02c1bac64b509ae6ba5c7cd..a5b792d94a2357f0536def00e80430d00a0b4fa7 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1200,10 +1200,8 @@ public final class Bukkit {
+@@ -827,9 +827,8 @@ public final class Bukkit {
+      *
+      * @param id the id of the map to get
+      * @return a map view if it exists, or null otherwise
+-     * @deprecated Magic value
+      */
+-    @Deprecated
++    //@Deprecated // Paper - Not a magic value
+     @Nullable
+     public static MapView getMap(int id) {
+         return server.getMap(id);
+@@ -1221,10 +1220,8 @@ public final class Bukkit {
       * @param name the name the player to retrieve
       * @return an offline player
       * @see #getOfflinePlayer(java.util.UUID)
@@ -24,7 +35,7 @@ index c02b663ab711daa06de054a92f09485231824458..befbbefc97abbac819f4034e3df62f84
      @NotNull
      public static OfflinePlayer getOfflinePlayer(@NotNull String name) {
          return server.getOfflinePlayer(name);
-@@ -1749,7 +1747,7 @@ public final class Bukkit {
+@@ -1770,7 +1767,7 @@ public final class Bukkit {
       *
       * @return the scoreboard manager or null if no worlds are loaded.
       */
@@ -79,10 +90,10 @@ index 20978b269a7757a561d6b872cc77898b44bbd272..2b9a117804a8ca54b47e51e23359bd6e
          if (this.world == null) {
              return null;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 92b6563712b1622bbf2a987f7ddc4b460b3ead0e..c154e94acda00924f81368f2aad1933726596b17 100644
+index 64d01ce77966e895ec494719a4398577be1097a1..7705fece7f58bd66f7d68da85f8f34e43b4bae12 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -4419,11 +4419,11 @@ public enum Material implements Keyed, Translatable {
+@@ -4465,11 +4465,11 @@ public enum Material implements Keyed, Translatable {
      }
  
      /**
@@ -96,7 +107,7 @@ index 92b6563712b1622bbf2a987f7ddc4b460b3ead0e..c154e94acda00924f81368f2aad19337
      public boolean isLegacy() {
          return legacy;
      }
-@@ -4494,8 +4494,10 @@ public enum Material implements Keyed, Translatable {
+@@ -4540,8 +4540,10 @@ public enum Material implements Keyed, Translatable {
       * Gets the MaterialData class associated with this Material
       *
       * @return MaterialData associated with this Material
@@ -145,10 +156,27 @@ index f43209cf7b752c26718c303ca8c3e1c7d9912ad3..f0094e6fb05e526736629ad3181c8d2c
  
      /**
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index ea80520c19cd3dd6aa25665c748d96fd4a3f6e40..ff1fcdaccbca81602278a0b52670f7b895ba22b7 100644
+index 6e5e5fecdd7b76dde2e1524fe7b5faa837f491fb..09e3c2872462da546b891cbc396aaffb77f6aadf 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
-@@ -229,8 +229,11 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -157,14 +157,14 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+      *
+      * @see TrimMaterial
+      */
+-    @ApiStatus.Experimental
++    //@ApiStatus.Experimental // Paper
+     Registry<TrimMaterial> TRIM_MATERIAL = Bukkit.getRegistry(TrimMaterial.class);
+     /**
+      * Trim patterns.
+      *
+      * @see TrimPattern
+      */
+-    @ApiStatus.Experimental
++    //@ApiStatus.Experimental // Paper
+     Registry<TrimPattern> TRIM_PATTERN = Bukkit.getRegistry(TrimPattern.class);
+     /**
+      * Villager profession.
+@@ -246,8 +246,11 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
       *
       * @param input non-null input
       * @return registered object or null if does not exist
@@ -175,10 +203,21 @@ index 6277451c3c6c551078c237cd767b6d70c4f585ea..10f5cfb1885833a1d2c1027c03974da4
      CRACKED(0x0),
      GLYPHED(0x1),
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 20f9384c30f46e11631a7f79c48915bf55762858..291abd48c3c8af0807bce312c18d8cf287c1f8cf 100644
+index 43c14b492879d56993586a7b64eb374654ca67a6..38eb76e9f0dc8dd377bb82990eea0c598bdb1000 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1001,10 +1001,8 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -695,9 +695,8 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      *
+      * @param id the id of the map to get
+      * @return a map view if it exists, or null otherwise
+-     * @deprecated Magic value
+      */
+-    @Deprecated
++    //@Deprecated // Paper - Not a magic value
+     @Nullable
+     public MapView getMap(int id);
+ 
+@@ -1026,10 +1025,8 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       * @param name the name the player to retrieve
       * @return an offline player
       * @see #getOfflinePlayer(java.util.UUID)
@@ -190,7 +229,7 @@ index 20f9384c30f46e11631a7f79c48915bf55762858..291abd48c3c8af0807bce312c18d8cf2
      @NotNull
      public OfflinePlayer getOfflinePlayer(@NotNull String name);
  
-@@ -1467,7 +1465,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1492,7 +1489,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       *
       * @return the scoreboard manager or null if no worlds are loaded.
       */
@@ -200,17 +239,17 @@ index 20f9384c30f46e11631a7f79c48915bf55762858..291abd48c3c8af0807bce312c18d8cf2
  
      /**
 diff --git a/src/main/java/org/bukkit/UndefinedNullability.java b/src/main/java/org/bukkit/UndefinedNullability.java
-index f465ea001c190e10eb99db818559d302e5512e99..567f560d145dea6fc7240699175496156c468a6d 100644
+index 4d4265c237179470e1fd017721a8dd595f114013..3babc9df26276300392d3f92ee6e317c33643b0b 100644
 --- a/src/main/java/org/bukkit/UndefinedNullability.java
 +++ b/src/main/java/org/bukkit/UndefinedNullability.java
-@@ -13,6 +13,7 @@ import java.lang.annotation.RetentionPolicy;
+@@ -14,6 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
   * suggests a bad API design.
   */
  @Retention(RetentionPolicy.CLASS)
 +@java.lang.annotation.Documented // Paper
+ @ApiStatus.Internal
  @Deprecated
  public @interface UndefinedNullability {
- 
 diff --git a/src/main/java/org/bukkit/Vibration.java b/src/main/java/org/bukkit/Vibration.java
 index e455eb21abf121dc6ff10ff8a13dd06f67096a8f..bbc01e7c192ae6689c301670047ff114306c57cb 100644
 --- a/src/main/java/org/bukkit/Vibration.java
@@ -243,10 +282,10 @@ index e455eb21abf121dc6ff10ff8a13dd06f67096a8f..bbc01e7c192ae6689c301670047ff114
          return origin;
      }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 915c7fb937432f9cb33021d482eaae52b4807c67..cea7a1bd51418863b831334739310bc80a30d7e8 100644
+index eea0b7edd0a4e8a698c21e8b468f802e072a68cc..948a989aeea4165f0714db69c70ca8dcb488d44d 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -430,9 +430,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -397,9 +397,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
       * @param z Z-coordinate of the chunk
       * @return Whether the chunk was actually refreshed
       *
@@ -257,7 +296,7 @@ index 915c7fb937432f9cb33021d482eaae52b4807c67..cea7a1bd51418863b831334739310bc8
      public boolean refreshChunk(int x, int z);
  
      /**
-@@ -2145,8 +2144,10 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -2112,8 +2111,10 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
       * @return The spawned {@link FallingBlock} instance
       * @throws IllegalArgumentException if {@link Location} or {@link
       *     MaterialData} are null or {@link Material} of the {@link MaterialData} is not a block
@@ -291,6 +330,19 @@ index 631cbf2be51040eee00aa39a39c5ec4003f91843..3147e278eac674ed21d714bbe318b135
       */
 +    @Deprecated // Paper
      void setData(@NotNull MaterialData data);
+ 
+     /**
+diff --git a/src/main/java/org/bukkit/block/DecoratedPot.java b/src/main/java/org/bukkit/block/DecoratedPot.java
+index 210f4be510c2074db3938d604937dae0270dd994..59b98f411f62e16fafb0efb489562847a090c733 100644
+--- a/src/main/java/org/bukkit/block/DecoratedPot.java
++++ b/src/main/java/org/bukkit/block/DecoratedPot.java
+@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents a captured state of a decorated pot.
+  */
+-@ApiStatus.Experimental
++//@ApiStatus.Experimental // Paper
+ public interface DecoratedPot extends TileState {
  
      /**
 diff --git a/src/main/java/org/bukkit/entity/Enderman.java b/src/main/java/org/bukkit/entity/Enderman.java
@@ -368,43 +420,6 @@ index 95c79c5fa0c4e30201f887da6467ce5f81c8a255..7f9c4d4b430a3f0276461346ff2621ba
      @NotNull
 +    @Deprecated // Paper
      public MaterialData getDisplayBlock();
- 
-     /**
-diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 83c431dbaeceb5a28d0aaf3b8e5eae7462aeef40..dea53d5efe073fb3c516af9af6c650301b3239bd 100644
---- a/src/main/java/org/bukkit/entity/Player.java
-+++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1463,9 +1463,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-      *
-      * @param plugin Plugin that wants to hide the entity
-      * @param entity Entity to hide
--     * @deprecated draft API
-      */
--    @Deprecated
-+    @org.jetbrains.annotations.ApiStatus.Experimental // Paper
-     public void hideEntity(@NotNull Plugin plugin, @NotNull Entity entity);
- 
-     /**
-@@ -1475,9 +1474,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-      *
-      * @param plugin Plugin that wants to show the entity
-      * @param entity Entity to show
--     * @deprecated draft API
-      */
--    @Deprecated
-+    @org.jetbrains.annotations.ApiStatus.Experimental // Paper
-     public void showEntity(@NotNull Plugin plugin, @NotNull Entity entity);
- 
-     /**
-@@ -1486,9 +1484,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-      * @param entity Entity to check
-      * @return True if the provided entity is not being hidden from this
-      *     player
--     * @deprecated draft API
-      */
--    @Deprecated
-+    @org.jetbrains.annotations.ApiStatus.Experimental // Paper
-     public boolean canSee(@NotNull Entity entity);
  
      /**
 diff --git a/src/main/java/org/bukkit/entity/Projectile.java b/src/main/java/org/bukkit/entity/Projectile.java
@@ -495,21 +510,6 @@ index e1123295b9511a2c610a1baf7195638f7f3e64c4..273ae8e5da0a858d3b82d1b0f5992318
      @Override
      public void setCancelled(boolean cancel) {
          this.cancel = cancel;
-diff --git a/src/main/java/org/bukkit/event/player/PlayerHideEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerHideEntityEvent.java
-index d8a73cd22268e90eb438f522b9019f826f343275..78869fdb9cf4c541dff7d67b51866914987abf18 100644
---- a/src/main/java/org/bukkit/event/player/PlayerHideEntityEvent.java
-+++ b/src/main/java/org/bukkit/event/player/PlayerHideEntityEvent.java
-@@ -15,9 +15,8 @@ import org.jetbrains.annotations.NotNull;
-  * This event is called regardless of if the entity was within tracking range.
-  *
-  * @see Player#hideEntity(org.bukkit.plugin.Plugin, org.bukkit.entity.Entity)
-- * @deprecated draft API
-  */
--@Deprecated
-+@org.jetbrains.annotations.ApiStatus.Experimental // Paper
- @Warning(false)
- public class PlayerHideEntityEvent extends PlayerEvent {
- 
 diff --git a/src/main/java/org/bukkit/event/player/PlayerMoveEvent.java b/src/main/java/org/bukkit/event/player/PlayerMoveEvent.java
 index 1b2267f4e8ebded198773ec80e2bff2c861c7084..1a58734d919fae247eeb85dd785fd59990856505 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerMoveEvent.java
@@ -523,21 +523,6 @@ index 1b2267f4e8ebded198773ec80e2bff2c861c7084..1a58734d919fae247eeb85dd785fd599
      public Location getTo() {
          return to;
      }
-diff --git a/src/main/java/org/bukkit/event/player/PlayerShowEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerShowEntityEvent.java
-index 5408a8c123942a56ef11597ae6cdb77e14f741e3..29bb84145be18ef9162abdfc8820f2b3f7fd0db5 100644
---- a/src/main/java/org/bukkit/event/player/PlayerShowEntityEvent.java
-+++ b/src/main/java/org/bukkit/event/player/PlayerShowEntityEvent.java
-@@ -16,9 +16,8 @@ import org.jetbrains.annotations.NotNull;
-  * range.
-  *
-  * @see Player#showEntity(org.bukkit.plugin.Plugin, org.bukkit.entity.Entity)
-- * @deprecated draft API
-  */
--@Deprecated
-+@org.jetbrains.annotations.ApiStatus.Experimental // Paper
- @Warning(false)
- public class PlayerShowEntityEvent extends PlayerEvent {
- 
 diff --git a/src/main/java/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.java b/src/main/java/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.java
 index 6bafc62e2235a6b783cbf96f4dabeeaf02bd5178..50c762d777ac90a05772501a28cacff8fd3f5126 100644
 --- a/src/main/java/org/bukkit/event/vehicle/VehicleEntityCollisionEvent.java
@@ -806,13 +791,13 @@ index 5461f7fa75f5a065bb333b4a113640b5fe1e3825..c4d657727e508cb941320730a9d3aa54
  
      /**
 diff --git a/src/main/java/org/bukkit/inventory/ShapedRecipe.java b/src/main/java/org/bukkit/inventory/ShapedRecipe.java
-index 7a73a8dc30c5c3acfe8c686a0328728c17bd8e66..60745c16264991ab9365e8f9704ff87cf1fadd43 100644
+index c2d224b6472a65cd362e1ab55ce7e3d0b5a3befc..833322283bdddc16524ddb56aaa481bf36881eeb 100644
 --- a/src/main/java/org/bukkit/inventory/ShapedRecipe.java
 +++ b/src/main/java/org/bukkit/inventory/ShapedRecipe.java
-@@ -96,8 +96,10 @@ public class ShapedRecipe implements Recipe, Keyed {
-      * @param key The character that represents the ingredient in the shape.
+@@ -112,8 +112,10 @@ public class ShapedRecipe implements Recipe, Keyed {
       * @param ingredient The ingredient.
       * @return The changed recipe, so you can chain calls.
+      * @throws IllegalArgumentException if the {@code key} does not appear in the shape.
 +     * @deprecated use {@link #setIngredient(char, RecipeChoice)}
       */
      @NotNull
@@ -820,7 +805,7 @@ index 7a73a8dc30c5c3acfe8c686a0328728c17bd8e66..60745c16264991ab9365e8f9704ff87c
      public ShapedRecipe setIngredient(char key, @NotNull MaterialData ingredient) {
          return setIngredient(key, ingredient.getItemType(), ingredient.getData());
      }
-@@ -156,7 +158,9 @@ public class ShapedRecipe implements Recipe, Keyed {
+@@ -191,7 +193,9 @@ public class ShapedRecipe implements Recipe, Keyed {
       * Get a copy of the ingredients map.
       *
       * @return The mapping of character to ingredients.
@@ -902,6 +887,19 @@ index 597a18a767b68b47e81454b7d44613c7178c1366..bc3440eb72127824b3961fbdae583bb6
      @NotNull
      public ItemStack getInput() {
          return this.ingredient.getItemStack();
+diff --git a/src/main/java/org/bukkit/inventory/meta/ColorableArmorMeta.java b/src/main/java/org/bukkit/inventory/meta/ColorableArmorMeta.java
+index 5ccae862dbac393805a47fe26c18a2f33f1e140d..72281899817c5c140cdca2afff75fbcebd942532 100644
+--- a/src/main/java/org/bukkit/inventory/meta/ColorableArmorMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/ColorableArmorMeta.java
+@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
+ /**
+  * Represents armor that an entity can equip and can also be colored.
+  */
+-@ApiStatus.Experimental
++//@ApiStatus.Experimental // Paper
+ public interface ColorableArmorMeta extends ArmorMeta, LeatherArmorMeta {
+ 
+     @Override
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 index 55e9dc5d1d87fbc9d0dabbb7bd59584fe2c5f379..5c1ca0e47f0ac1525c3d37b55f52874878f44c28 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
@@ -938,6 +936,63 @@ index 55e9dc5d1d87fbc9d0dabbb7bd59584fe2c5f379..5c1ca0e47f0ac1525c3d37b55f528748
      void setLocalizedName(@Nullable String name);
  
      /**
+diff --git a/src/main/java/org/bukkit/inventory/meta/MapMeta.java b/src/main/java/org/bukkit/inventory/meta/MapMeta.java
+index 32055a8890425e0b819930f3059da5ea9dfca553..26a336dade83baee97d20eb39a058925659f5777 100644
+--- a/src/main/java/org/bukkit/inventory/meta/MapMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/MapMeta.java
+@@ -16,13 +16,8 @@ public interface MapMeta extends ItemMeta {
+      *
+      * @return true if this has a map ID number.
+      * @see #hasMapView()
+-     * @deprecated These methods are poor API: They rely on the caller to pass
+-     * in an only an integer property, and have poorly defined implementation
+-     * behavior if that integer is not a valid map (the current implementation
+-     * for example will generate a new map with a different ID). The xxxMapView
+-     * family of methods should be used instead.
+      */
+-    @Deprecated
++    //@Deprecated // Paper
+     boolean hasMapId();
+ 
+     /**
+@@ -34,13 +29,8 @@ public interface MapMeta extends ItemMeta {
+      *
+      * @return the map ID that is set
+      * @see #getMapView()
+-     * @deprecated These methods are poor API: They rely on the caller to pass
+-     * in an only an integer property, and have poorly defined implementation
+-     * behavior if that integer is not a valid map (the current implementation
+-     * for example will generate a new map with a different ID). The xxxMapView
+-     * family of methods should be used instead.
+      */
+-    @Deprecated
++    //@Deprecated // Paper
+     int getMapId();
+ 
+     /**
+diff --git a/src/main/java/org/bukkit/material/Openable.java b/src/main/java/org/bukkit/material/Openable.java
+index 0ae54f973d11df74abb3105cf9226afb130b4f33..597036bad6bc61b4aa63a61b45e886dd74a0b7f6 100644
+--- a/src/main/java/org/bukkit/material/Openable.java
++++ b/src/main/java/org/bukkit/material/Openable.java
+@@ -1,5 +1,6 @@
+ package org.bukkit.material;
+ 
++@Deprecated // Paper
+ public interface Openable {
+ 
+     /**
+diff --git a/src/main/java/org/bukkit/material/Redstone.java b/src/main/java/org/bukkit/material/Redstone.java
+index 3e46603f8cd38041394e0e1baf788d9009b3ffc7..b15c141f1db07296bb349f11c6f39b0fbe53e7b1 100644
+--- a/src/main/java/org/bukkit/material/Redstone.java
++++ b/src/main/java/org/bukkit/material/Redstone.java
+@@ -3,6 +3,7 @@ package org.bukkit.material;
+ /**
+  * Indicated a Material that may carry or create a Redstone current
+  */
++@Deprecated // Paper
+ public interface Redstone {
+ 
+     /**
 diff --git a/src/main/java/org/bukkit/material/Step.java b/src/main/java/org/bukkit/material/Step.java
 index 9f502e7ee05d0512e190a1722cc112ece068c4e2..10c0465cf58d680bfa9a0f9233f94e8b6d5a9b93 100644
 --- a/src/main/java/org/bukkit/material/Step.java
@@ -964,3 +1019,15 @@ index 0ea9c6b2420a0f990bd1fdf50fc015e37a7060d8..e99644eae1c662b117aa19060d2484ac
  public enum MushroomBlockTexture {
  
      /**
+diff --git a/src/test/java/org/bukkit/materials/MaterialDataTest.java b/src/test/java/org/bukkit/materials/MaterialDataTest.java
+index a935ae4a25b7955416652bf8c4690a804f12e903..e83321263bb0e2b67af981dbb2e8fec4e973ae56 100644
+--- a/src/test/java/org/bukkit/materials/MaterialDataTest.java
++++ b/src/test/java/org/bukkit/materials/MaterialDataTest.java
+@@ -22,6 +22,7 @@ import org.bukkit.material.WoodenStep;
+ import org.bukkit.material.types.MushroomBlockTexture;
+ import org.junit.Test;
+ 
++@Deprecated // Paper
+ public class MaterialDataTest {
+ 
+     @Test

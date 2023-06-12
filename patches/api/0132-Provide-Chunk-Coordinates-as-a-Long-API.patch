@@ -7,10 +7,10 @@ Allows you to easily access the chunks X/z as a long, and a method
 to look up by the long key too.
 
 diff --git a/src/main/java/org/bukkit/Chunk.java b/src/main/java/org/bukkit/Chunk.java
-index a33379e6df0577ea149be473a647258a3bda99f1..fa14c276309fc113d5fda38dfdda1d6ee25b8787 100644
+index efbfed855248cff8b4bdbfc181d3e82058df4749..766d643f0fe79660942fdad25e39e488e9379419 100644
 --- a/src/main/java/org/bukkit/Chunk.java
 +++ b/src/main/java/org/bukkit/Chunk.java
-@@ -29,6 +29,32 @@ public interface Chunk extends PersistentDataHolder {
+@@ -33,6 +33,32 @@ public interface Chunk extends PersistentDataHolder {
       */
      int getZ();
  
@@ -44,10 +44,10 @@ index a33379e6df0577ea149be473a647258a3bda99f1..fa14c276309fc113d5fda38dfdda1d6e
       * Gets the world containing this chunk
       *
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index e0caac06b7f5459faefbbd5a6a3486dbb6bfa9ba..7d6c923ea603a3193865e6a34b41617ac7016d19 100644
+index e9af7ce218e44940cd074cc0d511268284e312ef..745933ca3fee4efdba7660f157407ebe0cb91a6b 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -212,6 +212,22 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -179,6 +179,22 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @NotNull
      public Chunk getChunkAt(@NotNull Block block);
  
