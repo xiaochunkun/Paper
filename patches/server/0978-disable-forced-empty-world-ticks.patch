@@ -5,10 +5,10 @@ Subject: [PATCH] disable forced empty world ticks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 536bedfe50288ef18468c71d41a6f0f82619f72d..c38d1a01499e2897e4a0f9e8bc31344729f382f9 100644
+index 18aac3da3c88f33b1a71a5920a8daa27e9723913..813e0c218a9b751bc9e386721f309ed91b236fe3 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -691,7 +691,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -832,7 +832,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          timings.doSounds.stopTiming(); // Spigot
          this.handlingTick = false;
          gameprofilerfiller.pop();
