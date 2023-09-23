@@ -25,20 +25,20 @@ Other changes:
 Co-Authored-By: Emilia Kond <emilia@rymiel.space>
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index ba38153a37e864ab7f02a169da3df8806122aa76..2f562d2fb02d58551338b055a0dd6c05df44e532 100644
+index df6f6e6d8f0b72598a375868321f8e10618a337b..2f4e515bc6498ea9c79f95462500a9b53064c017 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -6,9 +6,30 @@ plugins {
-     id("com.github.johnrengelman.shadow")
+@@ -7,11 +7,30 @@ plugins {
  }
  
+ val shade: Configuration by configurations.creating
 +val log4jPlugins = sourceSets.create("log4jPlugins")
 +configurations.named(log4jPlugins.compileClasspathConfigurationName) {
 +    extendsFrom(configurations.compileClasspath.get())
 +}
-+val alsoShade: Configuration by configurations.creating
-+
+ 
  dependencies {
+     shade(files(tasks.filterProjectDir.flatMap { it.outputJar }))
      implementation(project(":paper-api"))
 -    implementation("jline:jline:2.12.1")
 +    // Paper start
@@ -55,20 +55,11 @@ index ba38153a37e864ab7f02a169da3df8806122aa76..2f562d2fb02d58551338b055a0dd6c05
 +    runtimeOnly("org.apache.logging.log4j:log4j-core:2.19.0")
 +    log4jPlugins.annotationProcessorConfigurationName("org.apache.logging.log4j:log4j-core:2.19.0") // Paper - Needed to generate meta for our Log4j plugins
 +    runtimeOnly(log4jPlugins.output)
-+    alsoShade(log4jPlugins.output)
++    shade(log4jPlugins.output)
 +    // Paper end
      implementation("org.apache.logging.log4j:log4j-iostreams:2.19.0") // Paper - remove exclusion
      implementation("org.ow2.asm:asm:9.5")
      implementation("org.ow2.asm:asm-commons:9.5") // Paper - ASM event executor generation
-@@ -75,7 +96,7 @@ relocation {
- }
- 
- tasks.shadowJar {
--    configurations = listOf(project.configurations.vanillaServer.get())
-+    configurations = listOf(project.configurations.vanillaServer.get(), alsoShade)
-     archiveClassifier.set("mojang-mapped")
- 
-     for (relocation in relocation.relocations.get()) {
 diff --git a/src/log4jPlugins/java/io/papermc/paper/console/StripANSIConverter.java b/src/log4jPlugins/java/io/papermc/paper/console/StripANSIConverter.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..91547f6e6fe90006713beb2818da634304bdd236

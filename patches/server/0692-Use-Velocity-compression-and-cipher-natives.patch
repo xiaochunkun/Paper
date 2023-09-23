@@ -5,10 +5,10 @@ Subject: [PATCH] Use Velocity compression and cipher natives
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b81b99a7767e3b0d3549e49529e98efdb7334101..7df1b44674ba5e826ad7c96c9d242865a3282307 100644
+index e50102692446d4cf249ff36389ac1d80be69ea41..f64c15b9b8139967a0b071d596f87313c3767bad 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -41,6 +41,11 @@ dependencies {
+@@ -42,6 +42,11 @@ dependencies {
      runtimeOnly("org.xerial:sqlite-jdbc:3.43.0.0")
      runtimeOnly("com.mysql:mysql-connector-j:8.1.0")
      runtimeOnly("com.lmax:disruptor:3.4.4") // Paper

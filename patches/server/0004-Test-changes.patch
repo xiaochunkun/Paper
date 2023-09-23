@@ -5,10 +5,10 @@ Subject: [PATCH] Test changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 32d475a636d4ba90eeaecfac148143f940cba6e2..b6f741435b7c63d748b79669d3d8f420db52c3a7 100644
+index f208b05cacd7fa5e7f00f83e93eb35f5a8cfd307..ce42d3176b370a0b6fb4336f7bed62aa464ffd1b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -12,6 +12,7 @@ dependencies {
+@@ -15,6 +15,7 @@ dependencies {
      implementation("org.apache.logging.log4j:log4j-iostreams:2.19.0") // Paper - remove exclusion
      implementation("org.ow2.asm:asm:9.5")
      implementation("org.ow2.asm:asm-commons:9.5") // Paper - ASM event executor generation

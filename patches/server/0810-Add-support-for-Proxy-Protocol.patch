@@ -5,13 +5,13 @@ Subject: [PATCH] Add support for Proxy Protocol
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 7df1b44674ba5e826ad7c96c9d242865a3282307..26618ddf85952694ae2c78f41a19e4b9a324f059 100644
+index f64c15b9b8139967a0b071d596f87313c3767bad..c8db27cab9047b7cdcbe5e83e1c7ad838b9c8f13 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -30,6 +30,7 @@ dependencies {
+@@ -31,6 +31,7 @@ dependencies {
      log4jPlugins.annotationProcessorConfigurationName("org.apache.logging.log4j:log4j-core:2.19.0") // Paper - Needed to generate meta for our Log4j plugins
      runtimeOnly(log4jPlugins.output)
-     alsoShade(log4jPlugins.output)
+     shade(log4jPlugins.output)
 +    implementation("io.netty:netty-codec-haproxy:4.1.87.Final") // Paper - Add support for proxy protocol
      // Paper end
      implementation("org.apache.logging.log4j:log4j-iostreams:2.19.0") // Paper - remove exclusion

@@ -14,10 +14,10 @@ public org.spigotmc.SpigotWorldConfig getString(Ljava/lang/String;Ljava/lang/Str
 public net.minecraft.world.level.NaturalSpawner SPAWNING_CATEGORIES
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b6f741435b7c63d748b79669d3d8f420db52c3a7..ba38153a37e864ab7f02a169da3df8806122aa76 100644
+index ce42d3176b370a0b6fb4336f7bed62aa464ffd1b..df6f6e6d8f0b72598a375868321f8e10618a337b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -13,6 +13,7 @@ dependencies {
+@@ -16,6 +16,7 @@ dependencies {
      implementation("org.ow2.asm:asm:9.5")
      implementation("org.ow2.asm:asm-commons:9.5") // Paper - ASM event executor generation
      testImplementation("org.mockito:mockito-core:4.9.0") // Paper - switch to mockito

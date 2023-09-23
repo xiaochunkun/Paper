@@ -5,10 +5,10 @@ Subject: [PATCH] Implement Mob Goal API
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index dfb43cf7be60733f3ab142de66139971bca1b1fe..b81b99a7767e3b0d3549e49529e98efdb7334101 100644
+index 3fbe04fac5ac570e43a44939850ebec3d1c6ae15..e50102692446d4cf249ff36389ac1d80be69ea41 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -46,6 +46,7 @@ dependencies {
+@@ -47,6 +47,7 @@ dependencies {
      runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.3")
      runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
  
