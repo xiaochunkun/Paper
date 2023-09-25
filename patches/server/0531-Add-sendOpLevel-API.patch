@@ -32,7 +32,7 @@ index 709c37e41f566a8301ec26ca76eb28c44a9bf1cd..adc96e0c4f81375253b540a3b003a00e
  
      public boolean isWhiteListed(GameProfile profile) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 47fdb3c21e10f86c34c1634708dac784577cd5f0..7362f0e73533c6b202021b93057cc0a23b5f3e99 100644
+index bf25a6d73d18e2b0a1571d317db2d4c564c1e077..2b66e085a5cfa4cb49453759bf17a80f6a4f4df7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -640,6 +640,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

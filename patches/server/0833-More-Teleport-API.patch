@@ -74,7 +74,7 @@ index 03142d4eaa3ebdf590ec1131f28690da9c6fe748..863d5a2c6729f8675b03a0575a7eb69c
          // Let the server handle cross world teleports
          if (location.getWorld() != null && !location.getWorld().equals(this.getWorld())) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 16f3381e9cc42c7747199e7c178bd071b798f0e4..842471eb7dd0d68368e551220922b05b26e476e2 100644
+index bf88734b77862c4aad449834d598afb3d23d6955..a1b5e3cad681b4f973ace8572594d091219d0a53 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1212,13 +1212,101 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

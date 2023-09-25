@@ -7,10 +7,10 @@ Subject: [PATCH] Detail more information in watchdog dumps
 - Dump player name, player uuid, position, and world for packet handling
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index cb82729631f3944cbf068ff730df0c2e1c3b2e1f..fdfd07b76b904e5ad70ca63a44f2442500f1e887 100644
+index 8057b676b5622eaf799be18c7062509609ba90e9..3b8958c6b5db527208908cc1b41cb828084b5ae7 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -521,7 +521,13 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -522,7 +522,13 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
              if (!(this.packetListener instanceof net.minecraft.server.network.ServerLoginPacketListenerImpl loginPacketListener)
                  || loginPacketListener.state != net.minecraft.server.network.ServerLoginPacketListenerImpl.State.VERIFYING
                  || Connection.joinAttemptsThisTick++ < MAX_PER_TICK) {

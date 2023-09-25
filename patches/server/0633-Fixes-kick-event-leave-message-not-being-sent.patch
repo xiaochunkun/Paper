@@ -17,10 +17,10 @@ index 1d8328bc7acde64f3a0cff4d20bdca44baddd409..a75377cf94c70011a967e7ede93f903a
      public boolean isRealPlayer; // Paper
      public final com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer> cachedSingleHashSet; // Paper
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index 7b57657b204204e2a1971c0e1c63812fea14c496..231150bac0ae61e9722c2cdfd70d6f7d254681e4 100644
+index 114c3f62bec9d28e8a4493fe72101b12c9a32661..45b02e04847ddfc57e4f5830d9fb84c4f5c0475c 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -77,6 +77,11 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -76,6 +76,11 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
  
      @Override
      public void onDisconnect(Component reason) {
@@ -32,7 +32,7 @@ index 7b57657b204204e2a1971c0e1c63812fea14c496..231150bac0ae61e9722c2cdfd70d6f7d
          if (this.isSingleplayerOwner()) {
              ServerCommonPacketListenerImpl.LOGGER.info("Stopping singleplayer server as player logged out");
              this.server.halt(false);
-@@ -315,7 +320,6 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -307,7 +312,6 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
              // Do not kick the player
              return;
          }
@@ -40,7 +40,7 @@ index 7b57657b204204e2a1971c0e1c63812fea14c496..231150bac0ae61e9722c2cdfd70d6f7d
          // Send the possibly modified leave message
          final Component ichatbasecomponent = io.papermc.paper.adventure.PaperAdventure.asVanilla(event.reason()); // Paper - Adventure
          // CraftBukkit end
-@@ -324,7 +328,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -316,7 +320,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
          this.connection.send(new ClientboundDisconnectPacket(ichatbasecomponent), PacketSendListener.thenRun(() -> {
              this.connection.disconnect(ichatbasecomponent);
          }));

@@ -264,10 +264,10 @@ index 859af8c845bae9781a62fa4acae56c6e2d449e10..ec7239fd6a2ecf732d2843f9426e4cb6
          return this.threshold;
      }
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index c06473f8c6cb116071e256747bc95c38dd2015a6..cb82729631f3944cbf068ff730df0c2e1c3b2e1f 100644
+index eb87dcc0d0e3e7383ab77b60495a63630011234e..8057b676b5622eaf799be18c7062509609ba90e9 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -669,11 +669,28 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -670,11 +670,28 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
          return networkmanager;
      }
  
@@ -300,7 +300,7 @@ index c06473f8c6cb116071e256747bc95c38dd2015a6..cb82729631f3944cbf068ff730df0c2e
  
      public boolean isEncrypted() {
          return this.encrypted;
-@@ -706,16 +723,17 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -707,16 +724,17 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
  
      public void setupCompression(int compressionThreshold, boolean rejectsBadPackets) {
          if (compressionThreshold >= 0) {

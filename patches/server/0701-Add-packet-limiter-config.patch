@@ -24,10 +24,10 @@ and an action can be defined: DROP or KICK
 If interval or rate are less-than 0, the limit is ignored
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index fdfd07b76b904e5ad70ca63a44f2442500f1e887..91fcb63835b0b725c53bc75be782b5c5bcc870e7 100644
+index 3b8958c6b5db527208908cc1b41cb828084b5ae7..22171b3ce7588e1ed04f0142efab10378ed7c932 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -132,6 +132,22 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -133,6 +133,22 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
          return null;
      }
      // Paper end - add utility methods
@@ -50,7 +50,7 @@ index fdfd07b76b904e5ad70ca63a44f2442500f1e887..91fcb63835b0b725c53bc75be782b5c5
  
      public Connection(PacketFlow side) {
          this.receiving = side;
-@@ -224,6 +240,55 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -225,6 +241,55 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
              if (packetlistener == null) {
                  throw new IllegalStateException("Received a packet before the packet listener was initialized");
              } else {

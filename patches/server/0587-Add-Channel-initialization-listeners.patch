@@ -122,10 +122,10 @@ index 0000000000000000000000000000000000000000..0d7e7db9e37ef0183c32b217bd944fb4
 +    COMPRESSION_DISABLED
 +}
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index 4f5216cb3ac323de1a79c2b9c4d2ddd7c4875138..c06473f8c6cb116071e256747bc95c38dd2015a6 100644
+index 835add4d790316acf6782bee4f6caf3d350b5317..eb87dcc0d0e3e7383ab77b60495a63630011234e 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -717,6 +717,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -718,6 +718,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
              } else {
                  this.channel.pipeline().addBefore("encoder", "compress", new CompressionEncoder(compressionThreshold));
              }
@@ -133,7 +133,7 @@ index 4f5216cb3ac323de1a79c2b9c4d2ddd7c4875138..c06473f8c6cb116071e256747bc95c38
          } else {
              if (this.channel.pipeline().get("decompress") instanceof CompressionDecoder) {
                  this.channel.pipeline().remove("decompress");
-@@ -725,6 +726,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -726,6 +727,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
              if (this.channel.pipeline().get("compress") instanceof CompressionEncoder) {
                  this.channel.pipeline().remove("compress");
              }

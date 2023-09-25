@@ -5,10 +5,10 @@ Subject: [PATCH] Add API for quit reason
 
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index b9d1eefb2afbf24bdc902c6dea06e911e835d698..4f5216cb3ac323de1a79c2b9c4d2ddd7c4875138 100644
+index 41ef5e6c235a11b4e24c0b120061d663ce20b75f..835add4d790316acf6782bee4f6caf3d350b5317 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -183,12 +183,15 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -184,12 +184,15 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
  
              this.handlingFault = true;
              if (this.channel.isOpen()) {
@@ -37,10 +37,10 @@ index 4a4002b666c70c7065cad0743377cd13e443aa37..576fe4a114c7ad0edde3ce7b2cf1b397
      // Paper start - replace player chunk loader
      private final java.util.concurrent.atomic.AtomicReference<io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances> viewDistances = new java.util.concurrent.atomic.AtomicReference<>(new io.papermc.paper.chunk.system.RegionizedPlayerChunkLoader.ViewDistances(-1, -1, -1));
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index f4f410f99b475b9c2f7992a3917e3b5c2a2800ba..6e9062656a3b137b3589c43805c8f1d1105ba4db 100644
+index 4c6d2245d2d4bd55cc7e5a7ffc628a17b73035fc..3e225d5fa34219e68d619f629400a93ea2efe0a1 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -310,6 +310,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -302,6 +302,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
          final Component ichatbasecomponent = io.papermc.paper.adventure.PaperAdventure.asVanilla(event.reason()); // Paper - Adventure
          // CraftBukkit end
  

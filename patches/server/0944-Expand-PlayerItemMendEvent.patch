@@ -33,7 +33,7 @@ index 8d8fe55a05eea237a8af99ed15ab16d6167daa77..eca634792d2a7cc649675e3394e84dba
              return k > 0 ? this.repairPlayerItems(player, k) : 0;
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e91b45268d96dfa79cd6472824b203e5250df0a5..f036f8bbb5861edec3a05d4c96fc495dd055d529 100644
+index 41d683c8e21d4453ff6c62bce86e7cd5d13df7e8..8e1bdca5f651bc4db483c7ef4fdd1e1bb1b911bb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1737,11 +1737,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

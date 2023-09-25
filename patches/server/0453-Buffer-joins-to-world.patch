@@ -8,10 +8,10 @@ the world per tick, this attempts to reduce the impact that join floods
 has on the server
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index af4ded7a31da34ccebb3cfe9c1eb5d5c918950b1..b9d1eefb2afbf24bdc902c6dea06e911e835d698 100644
+index 369a35782fbfe6c9b21b5b1609276fb1242a6be6..41ef5e6c235a11b4e24c0b120061d663ce20b75f 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -498,14 +498,29 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -499,14 +499,29 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
      }
      // Paper end - Optimize network
  
