@@ -2854,10 +2854,10 @@ index 0000000000000000000000000000000000000000..3e61a926620a67daec3af54b72a1b911
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index fe86d25bfc444ad7143fb60e88bc46ad749c8579..ffacdd168e2b68663becfcfc5c917a41f8ec817d 100644
+index b7bc68c5d0dbb41c089f59b7db51342d45d1fc74..8d101352f72fc7fa21e0ba68039c79ce2fb92eb9 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -823,7 +823,6 @@ public final class Bukkit {
+@@ -833,7 +833,6 @@ public final class Bukkit {
       */
      public static void reload() {
          server.reload();
@@ -2866,10 +2866,10 @@ index fe86d25bfc444ad7143fb60e88bc46ad749c8579..ffacdd168e2b68663becfcfc5c917a41
  
      /**
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index b516021b6772d8266ed72b73170510ca7bfedba7..cadf590c7e597a503078892b3d5671642a80eb3f 100644
+index e3602c6703b29ffec17ef7806c9deb3eead8a112..3e642d8a0294f7290c3d4310813e6e8a467810e7 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1793,6 +1793,26 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1835,6 +1835,26 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
              throw new UnsupportedOperationException("Not supported yet.");
          }
  
@@ -2897,10 +2897,10 @@ index b516021b6772d8266ed72b73170510ca7bfedba7..cadf590c7e597a503078892b3d567164
           * Sends the component to the player
           *
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 2042e3fb0ea347148814d9838cd7bb475bd23984..f68ef89f37057cf677a767026ab395f7a839a2f9 100644
+index 0743592273cc1c5f4ab6935349941bf25b438448..659405d84b5a61618576e930805da5cd3a054b4c 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -35,6 +35,7 @@ public interface UnsafeValues {
+@@ -36,6 +36,7 @@ public interface UnsafeValues {
      net.kyori.adventure.text.Component resolveWithContext(net.kyori.adventure.text.Component component, org.bukkit.command.CommandSender context, org.bukkit.entity.Entity scoreboardSubject, boolean bypassPermissions) throws java.io.IOException;
      // Paper end
  
@@ -2908,7 +2908,7 @@ index 2042e3fb0ea347148814d9838cd7bb475bd23984..f68ef89f37057cf677a767026ab395f7
      Material toLegacy(Material material);
  
      Material fromLegacy(Material material);
-@@ -111,4 +112,12 @@ public interface UnsafeValues {
+@@ -119,4 +120,12 @@ public interface UnsafeValues {
          return !Bukkit.getUnsafe().isSupportedApiVersion(plugin.getDescription().getAPIVersion());
      }
      // Paper end
@@ -3455,10 +3455,10 @@ index 516d7fc7812aac343782861d0d567f54aa578c2a..00000000000000000000000000000000
 -    // Spigot end
 -}
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 1c072fbfdeb25a4fada75dcaa7cade4d24ca556a..e983cc255885622b9990492a3b6fd2fd77835d91 100644
+index e5a54a2f35d83f8c7a5f2b6512b86481aa7f9f51..c54d478035f7782074c00f870d41da8283fec538 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2156,7 +2156,14 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2346,7 +2346,19 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          @Deprecated // Paper
          public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable java.util.UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
              throw new UnsupportedOperationException("Not supported yet.");
@@ -3466,6 +3466,11 @@ index 1c072fbfdeb25a4fada75dcaa7cade4d24ca556a..e983cc255885622b9990492a3b6fd2fd
 +        }
 +
 +        // Paper start
++        /**
++         * @return the player's ping
++         * @deprecated use {@link Player#getPing()}
++         */
++        @Deprecated
 +        public int getPing() {
 +            throw new UnsupportedOperationException( "Not supported yet." );
          }

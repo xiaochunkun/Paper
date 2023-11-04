@@ -5,10 +5,10 @@ Subject: [PATCH] Make the default permission message configurable
 
 
 diff --git a/src/main/java/io/papermc/paper/command/PaperCommand.java b/src/main/java/io/papermc/paper/command/PaperCommand.java
-index e3467aaf6d0c8d486b84362e3c20b3fe631b50ff..8f16640fc2f1233c10392d7e32a54d784fd8e370 100644
+index 0dd48e4098191c8b6e29945d62bc473e9f3a1e77..ae51993e0de706cb62c96795ca9de7663893a5bf 100644
 --- a/src/main/java/io/papermc/paper/command/PaperCommand.java
 +++ b/src/main/java/io/papermc/paper/command/PaperCommand.java
-@@ -76,7 +76,7 @@ public final class PaperCommand extends Command {
+@@ -75,7 +75,7 @@ public final class PaperCommand extends Command {
          if (sender.hasPermission(BASE_PERM + permission) || sender.hasPermission("bukkit.command.paper")) {
              return true;
          }
@@ -18,10 +18,10 @@ index e3467aaf6d0c8d486b84362e3c20b3fe631b50ff..8f16640fc2f1233c10392d7e32a54d78
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8a6e457d20fad65023a182acd50bfb17f7f24017..17d731fe40506c6a5768e0b49a9f9bafc98e4a82 100644
+index cbdf413e16b819432b291d8fb2a87d6c3dba2ed2..4ca91d6e23862c9c7cb0bd3272cd6774d37960a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2689,6 +2689,16 @@ public final class CraftServer implements Server {
+@@ -2708,6 +2708,16 @@ public final class CraftServer implements Server {
          return io.papermc.paper.configuration.GlobalConfiguration.get().commands.suggestPlayerNamesWhenNullTabCompletions;
      }
  

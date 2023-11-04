@@ -12,18 +12,18 @@ flushing on the netty event loop, so it won't do the flush on the main thread.
 Renable flushing by passing -Dpaper.explicit-flush=true
 
 diff --git a/src/main/java/net/minecraft/network/Connection.java b/src/main/java/net/minecraft/network/Connection.java
-index c8e34e4f1519163fcac77606fe20c2ec9a282901..39b1d17cfb7d5c1b0f0ee449ee1c24ef050b0c0e 100644
+index faac9ba36d83f537fe62e177c15ae237059cc5cc..df5da9398c903d073485aaa0dce8e70947137cb9 100644
 --- a/src/main/java/net/minecraft/network/Connection.java
 +++ b/src/main/java/net/minecraft/network/Connection.java
-@@ -117,6 +117,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+@@ -114,6 +114,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
      // Paper start - NetworkClient implementation
      public int protocolVersion;
      public java.net.InetSocketAddress virtualHost;
 +    private static boolean enableExplicitFlush = Boolean.getBoolean("paper.explicit-flush");
      // Paper end
  
-     public Connection(PacketFlow side) {
-@@ -317,7 +318,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
+     // Paper start - add utility methods
+@@ -413,7 +414,7 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
          }
  
          if (this.channel != null) {

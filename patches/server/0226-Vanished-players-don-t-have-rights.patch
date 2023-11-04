@@ -39,11 +39,11 @@ index a6638e626600e4304a973497a39e3fac52203b16..e68b7a1b03783e4f9de24c5ae8773fc3
  
          BlockCanBuildEvent event = new BlockCanBuildEvent(CraftBlock.at(context.getLevel(), context.getClickedPos()), player, CraftBlockData.fromData(state), defaultReturn);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 1beff41c02fb4c22b5474da7c514be2f50f16055..8a53284a5846b25864352e18a5e6b2deb8d3e3ed 100644
+index b52a761e84e00f2ccac7b1b9db73e70ffa1c681b..f17cc5da4eb4b4e5bcfae8b234358464f6188f4a 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -273,6 +273,45 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-         this.tileLimiter = new org.spigotmc.TickLimiter(spigotConfig.tileMaxTickTime);
+         this.tileLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.tileMaxTickTime);
      }
  
 +    // Paper start
@@ -89,10 +89,10 @@ index 1beff41c02fb4c22b5474da7c514be2f50f16055..8a53284a5846b25864352e18a5e6b2de
      public boolean isClientSide() {
          return this.isClientSide;
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 116d3af618351cfec7dc172ba8e5170453b7226d..b77fefc9cf30fd438f557e5b56efb4c0251cb17a 100644
+index ec4022e16d3cdf375520a066afd772f1847e3516..7c8eb12c070bc1203ac94fec1a8f070dd4bda75f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1298,6 +1298,14 @@ public class CraftEventFactory {
+@@ -1369,6 +1369,14 @@ public class CraftEventFactory {
          Projectile projectile = (Projectile) entity.getBukkitEntity();
          org.bukkit.entity.Entity collided = position.getEntity().getBukkitEntity();
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);

@@ -13,7 +13,7 @@ Update adjacent blocks of doors, double plants, pistons and beds
 when cancelling interaction.
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-index 2e3b1eb4c4303d40f12c2e80f0608f2308225e97..0d72be376615f84934b031243ef283b6efc0bd13 100644
+index 16468dfd657501f6fd5eefa4c32682e24eaba22d..7adf7d1248680e591638298f13f5ae88788f5e4c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 @@ -186,6 +186,11 @@ public class ServerPlayerGameMode {

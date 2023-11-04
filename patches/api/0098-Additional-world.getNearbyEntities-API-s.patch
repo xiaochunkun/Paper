@@ -6,7 +6,7 @@ Subject: [PATCH] Additional world.getNearbyEntities API's
 Provides more methods to get nearby entities, and filter by types and predicates
 
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 7f23527168a33b92d823f76765edfe00abe0e4f6..0f76496471c50d5f18cedc735e667265e6c27422 100644
+index 609e4908ed21f69b9e813500e702bbe784bff00c..7a6caf93606203198369030a295f1edbffde3c31 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -1,6 +1,9 @@
@@ -19,7 +19,7 @@ index 7f23527168a33b92d823f76765edfe00abe0e4f6..0f76496471c50d5f18cedc735e667265
  import java.util.Collection;
  import java.util.HashMap;
  import java.util.List;
-@@ -624,6 +627,256 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -625,6 +628,256 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      @NotNull
      public Collection<Entity> getEntitiesByClasses(@NotNull Class<?>... classes);
  

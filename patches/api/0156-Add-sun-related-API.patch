@@ -5,10 +5,10 @@ Subject: [PATCH] Add sun related API
 
 
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 265d1751c5460121b29129d9588ef1a13564073b..eea0b7edd0a4e8a698c21e8b468f802e072a68cc 100644
+index fc6b99e4f37179b15254bf0b398b1a800de1b73f..df511007ca4b3b5df04abfa6b7f1c4de636407fc 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -1763,6 +1763,16 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -1782,6 +1782,16 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
       */
      public void setFullTime(long time);
  

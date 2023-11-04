@@ -5,18 +5,26 @@ Subject: [PATCH] Paper Plugins
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index a626bbad85f8d1b348d4e67f328f4b0141b267c1..b0ca0ddffce2524e82d891c7a4d69d3ef9f2c097 100644
+index 0c6e0bb90fe5ea29c467323a179a47ec122ba0f6..145f6209a984e74da2d2de03cf725c06c77ef8da 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -47,7 +47,7 @@ dependencies {
      implementation("org.ow2.asm:asm-commons:9.4")
      // Paper end
  
--    compileOnly("org.apache.maven:maven-resolver-provider:3.9.2")
-+    api("org.apache.maven:maven-resolver-provider:3.9.2")
-     compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.9.10")
-     compileOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.9.10")
+-    compileOnly("org.apache.maven:maven-resolver-provider:3.8.5")
++    api("org.apache.maven:maven-resolver-provider:3.8.5")
+     compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.3")
+     compileOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.3")
      compileOnly("com.google.code.findbugs:jsr305:1.3.9") // Paper
+@@ -118,6 +118,7 @@ tasks.withType<Javadoc> {
+         "https://jd.advntr.dev/text-serializer-plain/$adventureVersion/",
+         "https://jd.advntr.dev/text-logger-slf4j/$adventureVersion/",
+         // Paper end
++        "https://javadoc.io/doc/org.apache.maven.resolver/maven-resolver-api/1.7.3", // Paper
+     )
+     options.tags("apiNote:a:API Note:")
+ 
 diff --git a/src/main/java/io/papermc/paper/plugin/PermissionManager.java b/src/main/java/io/papermc/paper/plugin/PermissionManager.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..cdbc93b317b3bab47bf6552c29cfbb2c27846933
@@ -703,7 +711,7 @@ index 0000000000000000000000000000000000000000..0546fa1e9dcd7155086a8650806a8c08
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/loader/library/impl/JarLibrary.java b/src/main/java/io/papermc/paper/plugin/loader/library/impl/JarLibrary.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3327595d154700890c862a2ced5eff93da4bd634
+index 0000000000000000000000000000000000000000..e3da0d67cab01e1233dccde1a12ff25961ee79fb
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/loader/library/impl/JarLibrary.java
 @@ -0,0 +1,45 @@
@@ -728,7 +736,7 @@ index 0000000000000000000000000000000000000000..3327595d154700890c862a2ced5eff93
 + * resulting in a jar library that provides the jar at {@code libs/custom-library-1.24.jar} to the plugins classloader
 + * at runtime.
 + * <p>
-+ * The jar library implementation will error if file exists at the specified path.
++ * The jar library implementation will error if the file does not exist at the specified path.
 + */
 +public class JarLibrary implements ClassPathLibrary {
 +
@@ -754,7 +762,7 @@ index 0000000000000000000000000000000000000000..3327595d154700890c862a2ced5eff93
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/loader/library/impl/MavenLibraryResolver.java b/src/main/java/io/papermc/paper/plugin/loader/library/impl/MavenLibraryResolver.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e3e902a708a760be167cb1bba8e845c5fa5b9141
+index 0000000000000000000000000000000000000000..9af07d168beadaa77e4965819200eeb94fe3e092
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/loader/library/impl/MavenLibraryResolver.java
 @@ -0,0 +1,132 @@
@@ -784,12 +792,12 @@ index 0000000000000000000000000000000000000000..e3e902a708a760be167cb1bba8e845c5
 +import org.eclipse.aether.transfer.TransferEvent;
 +import org.eclipse.aether.transport.http.HttpTransporterFactory;
 +import org.jetbrains.annotations.NotNull;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
 +
 +import java.io.File;
 +import java.util.ArrayList;
 +import java.util.List;
-+import java.util.logging.Level;
-+import java.util.logging.Logger;
 +
 +/**
 + * The maven library resolver acts as a resolver for yet to be resolved jar libraries that may be pulled from a
@@ -810,7 +818,7 @@ index 0000000000000000000000000000000000000000..e3e902a708a760be167cb1bba8e845c5
 + */
 +public class MavenLibraryResolver implements ClassPathLibrary {
 +
-+    private static final Logger logger = Logger.getLogger("MavenLibraryResolver");
++    private static final Logger logger = LoggerFactory.getLogger("MavenLibraryResolver");
 +
 +    private final RepositorySystem repository;
 +    private final DefaultRepositorySystemSession session;
@@ -838,7 +846,7 @@ index 0000000000000000000000000000000000000000..e3e902a708a760be167cb1bba8e845c5
 +        this.session.setTransferListener(new AbstractTransferListener() {
 +            @Override
 +            public void transferInitiated(@NotNull TransferEvent event) throws TransferCancelledException {
-+                logger.log(Level.INFO, "Downloading {0}", event.getResource().getRepositoryUrl() + event.getResource().getResourceName());
++                logger.info("Downloading {}", event.getResource().getRepositoryUrl() + event.getResource().getResourceName());
 +            }
 +        });
 +        this.session.setReadOnly();
@@ -1338,13 +1346,13 @@ index 0000000000000000000000000000000000000000..6bf3d212a6156ad9ab0e82d1ca0a04f8
 +
 +}
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index fd0ae07b8a19f6b628601a487329a929f3a26c91..2042e3fb0ea347148814d9838cd7bb475bd23984 100644
+index a3ee6f2f588bc9c87e49378359f450820b9af1b9..0743592273cc1c5f4ab6935349941bf25b438448 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -101,4 +101,14 @@ public interface UnsafeValues {
- 
-     @Nullable
-     FeatureFlag getFeatureFlag(@NotNull NamespacedKey key);
+@@ -109,4 +109,14 @@ public interface UnsafeValues {
+      * @return an internal potion data
+      */
+     PotionType.InternalPotionData getInternalPotionData(NamespacedKey key);
 +
 +    // Paper start
 +    @Deprecated(forRemoval = true)
@@ -1441,10 +1449,10 @@ index 94f8ceb965cecb5669a84a0ec61c0f706c2a2673..e773db6da357ad210eb24d4c389af2dc
      }
  }
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index 77a380537b338fdd0aa2f6777ff775056cc6b221..028805bcdb1d2bb0d11387db165b7376579e5f60 100644
+index f48bdeb628a82416d93f84a0a10141447482bf83..c0691a849831f99268fdcb7b0f471f80a1a2a70e 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-@@ -195,7 +195,7 @@ import org.yaml.snakeyaml.nodes.Tag;
+@@ -198,7 +198,7 @@ import org.yaml.snakeyaml.representer.Representer;
   *      inferno.burningdeaths: true
   *</pre></blockquote>
   */
@@ -1453,7 +1461,7 @@ index 77a380537b338fdd0aa2f6777ff775056cc6b221..028805bcdb1d2bb0d11387db165b7376
      private static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z0-9 _.-]+$");
      private static final ThreadLocal<Yaml> YAML = new ThreadLocal<Yaml>() {
          @Override
-@@ -255,6 +255,70 @@ public final class PluginDescriptionFile {
+@@ -259,6 +259,70 @@ public final class PluginDescriptionFile {
      private Set<PluginAwareness> awareness = ImmutableSet.of();
      private String apiVersion = null;
      private List<String> libraries = ImmutableList.of();
@@ -2080,10 +2088,10 @@ index 6d634b0ea813ccb19f1562a7d0e5a59cea4eab21..e4b6f278a811acbb0070e311c5c3bdaf
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fdadf45bdc 100644
+index 64a294aeb6fb548794708b38c3707f9dd882b2ff..74b6581a97a092c44a0876e7981ff8a8e6153100 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -29,7 +29,8 @@ import org.jetbrains.annotations.Nullable;
+@@ -31,7 +31,8 @@ import org.jetbrains.annotations.Nullable;
  /**
   * A ClassLoader for plugins, to allow shared classes across multiple plugins
   */
@@ -2093,7 +2101,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
      private final JavaPluginLoader loader;
      private final Map<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>();
      private final PluginDescriptionFile description;
-@@ -43,24 +44,32 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -45,24 +46,32 @@ final class PluginClassLoader extends URLClassLoader {
      private JavaPlugin pluginInit;
      private IllegalStateException pluginState;
      private final Set<String> seenIllegalAccess = Collections.newSetFromMap(new ConcurrentHashMap<>());
@@ -2122,15 +2130,15 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
          this.url = file.toURI().toURL();
          this.libraryLoader = libraryLoader;
  
-+
 +        // Paper start
 +        this.dependencyContext = dependencyContext;
 +        this.classLoaderGroup = io.papermc.paper.plugin.provider.classloader.PaperClassLoaderStorage.instance().registerSpigotGroup(this);
 +        // Paper end
++
+         Class<?> jarClass;
          try {
-             Class<?> jarClass;
-             try {
-@@ -94,6 +103,27 @@ final class PluginClassLoader extends URLClassLoader {
+             jarClass = Class.forName(description.getMain(), true, this);
+@@ -107,6 +116,27 @@ final class PluginClassLoader extends URLClassLoader {
          return findResources(name);
      }
  
@@ -2158,7 +2166,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
      @Override
      protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
          return loadClass0(name, resolve, true, true);
-@@ -119,26 +149,11 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -132,26 +162,11 @@ final class PluginClassLoader extends URLClassLoader {
  
          if (checkGlobal) {
              // This ignores the libraries of other plugins, unless they are transitive dependencies.
@@ -2187,7 +2195,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
  
                  return result;
              }
-@@ -167,7 +182,7 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -180,7 +195,7 @@ final class PluginClassLoader extends URLClassLoader {
                      throw new ClassNotFoundException(name, ex);
                  }
  
@@ -2196,7 +2204,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
  
                  int dot = name.lastIndexOf('.');
                  if (dot != -1) {
-@@ -197,8 +212,8 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -210,8 +225,8 @@ final class PluginClassLoader extends URLClassLoader {
                  result = super.findClass(name);
              }
  
@@ -2206,7 +2214,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
          }
  
          return result;
-@@ -207,6 +222,12 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -220,6 +235,12 @@ final class PluginClassLoader extends URLClassLoader {
      @Override
      public void close() throws IOException {
          try {
@@ -2219,7 +2227,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
              super.close();
          } finally {
              jar.close();
-@@ -218,7 +239,7 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -231,7 +252,7 @@ final class PluginClassLoader extends URLClassLoader {
          return classes.values();
      }
  
@@ -2228,7 +2236,7 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
          Preconditions.checkArgument(javaPlugin != null, "Initializing plugin cannot be null");
          Preconditions.checkArgument(javaPlugin.getClass().getClassLoader() == this, "Cannot initialize plugin outside of this class loader");
          if (this.plugin != null || this.pluginInit != null) {
-@@ -228,6 +249,38 @@ final class PluginClassLoader extends URLClassLoader {
+@@ -241,6 +262,38 @@ final class PluginClassLoader extends URLClassLoader {
          pluginState = new IllegalStateException("Initial initialization");
          this.pluginInit = javaPlugin;
  
@@ -2268,48 +2276,35 @@ index 2f74ec96ece706de23156ebabfe493211bc05391..302319acbc257a075adfb78d9f5c49fd
 +
 +    // Paper end
  }
-diff --git a/src/test/java/io/papermc/paper/testing/TestServer.java b/src/test/java/io/papermc/paper/testing/TestServer.java
-index 756acf231b1b076b08046d86992ba7ce7f62a94f..52d27d977b9df0bdf02b33ed0aaa3b4db0a04cb4 100644
---- a/src/test/java/io/papermc/paper/testing/TestServer.java
-+++ b/src/test/java/io/papermc/paper/testing/TestServer.java
-@@ -36,9 +36,6 @@ public final class TestServer {
- 
-         when(dummyServer.getTag(anyString(), any(NamespacedKey.class), any())).thenAnswer(ignored -> new EmptyTag());
- 
--        final PluginManager pluginManager = new SimplePluginManager(dummyServer, new SimpleCommandMap(dummyServer));
--        when(dummyServer.getPluginManager()).thenReturn(pluginManager);
--
-         when(dummyServer.getRegistry(any())).thenAnswer(ignored -> new EmptyRegistry());
-         when(dummyServer.getScoreboardCriteria(anyString())).thenReturn(null);
- 
 diff --git a/src/test/java/org/bukkit/event/SyntheticEventTest.java b/src/test/java/org/bukkit/event/SyntheticEventTest.java
 deleted file mode 100644
-index 09886568ae6167141b463b6262565fa212af3385..0000000000000000000000000000000000000000
+index 40a086f2883c4419d2bf0bd44285f7c55562ba3e..0000000000000000000000000000000000000000
 --- a/src/test/java/org/bukkit/event/SyntheticEventTest.java
 +++ /dev/null
-@@ -1,48 +0,0 @@
+@@ -1,49 +0,0 @@
 -package org.bukkit.event;
 -
+-import static org.junit.jupiter.api.Assertions.*;
+-import org.bukkit.Bukkit;
 -import org.bukkit.plugin.PluginLoader;
 -import org.bukkit.plugin.SimplePluginManager;
 -import org.bukkit.plugin.TestPlugin;
 -import org.bukkit.plugin.java.JavaPluginLoader;
--import org.junit.Assert;
--import org.junit.Test;
+-import org.bukkit.support.AbstractTestingBase;
+-import org.junit.jupiter.api.Test;
 -
--public class SyntheticEventTest {
+-public class SyntheticEventTest extends AbstractTestingBase {
 -    @SuppressWarnings("deprecation")
 -    @Test
 -    public void test() {
--        io.papermc.paper.testing.TestServer.setup(); // Paper
--        final JavaPluginLoader loader = new JavaPluginLoader(org.bukkit.Bukkit.getServer()); // Paper
+-        final JavaPluginLoader loader = new JavaPluginLoader(Bukkit.getServer());
 -        TestPlugin plugin = new TestPlugin(getClass().getName()) {
 -            @Override
 -            public PluginLoader getPluginLoader() {
 -                return loader;
 -            }
 -        };
--        SimplePluginManager pluginManager = new SimplePluginManager(org.bukkit.Bukkit.getServer(), null); // Paper
+-        SimplePluginManager pluginManager = new SimplePluginManager(Bukkit.getServer(), null);
 -
 -        TestEvent event = new TestEvent(false);
 -        Impl impl = new Impl();
@@ -2317,7 +2312,7 @@ index 09886568ae6167141b463b6262565fa212af3385..00000000000000000000000000000000
 -        pluginManager.registerEvents(impl, plugin);
 -        pluginManager.callEvent(event);
 -
--        Assert.assertEquals(1, impl.callCount);
+-        assertEquals(1, impl.callCount);
 -    }
 -
 -    public abstract static class Base<E extends Event> implements Listener {
@@ -2338,26 +2333,28 @@ index 09886568ae6167141b463b6262565fa212af3385..00000000000000000000000000000000
 -}
 diff --git a/src/test/java/org/bukkit/plugin/PluginManagerTest.java b/src/test/java/org/bukkit/plugin/PluginManagerTest.java
 deleted file mode 100644
-index c46ed2acb82db814d660459b705dd49e6d44240f..0000000000000000000000000000000000000000
+index 03b08e47e91e8b56c1992fcd749a62eb9e7d4d68..0000000000000000000000000000000000000000
 --- a/src/test/java/org/bukkit/plugin/PluginManagerTest.java
 +++ /dev/null
-@@ -1,183 +0,0 @@
+@@ -1,185 +0,0 @@
 -package org.bukkit.plugin;
 -
+-import static org.bukkit.support.MatcherAssert.*;
 -import static org.hamcrest.Matchers.*;
--import static org.junit.Assert.*;
+-import org.bukkit.Bukkit;
 -import org.bukkit.event.Event;
 -import org.bukkit.event.TestEvent;
 -import org.bukkit.permissions.Permission;
--import org.junit.After;
--import org.junit.Test;
+-import org.bukkit.support.AbstractTestingBase;
+-import org.junit.jupiter.api.AfterEach;
+-import org.junit.jupiter.api.Test;
 -
--public class PluginManagerTest {
+-public class PluginManagerTest extends AbstractTestingBase {
 -    private class MutableObject {
 -        volatile Object value = null;
 -    }
 -
--    private static final PluginManager pm = org.bukkit.Bukkit.getServer().getPluginManager(); // Paper
+-    private static final PluginManager pm = Bukkit.getServer().getPluginManager();
 -
 -    private final MutableObject store = new MutableObject();
 -
@@ -2506,20 +2503,20 @@ index c46ed2acb82db814d660459b705dd49e6d44240f..00000000000000000000000000000000
 -    private void testRemovePermissionByName(final String name) {
 -        final Permission perm = new Permission(name);
 -        pm.addPermission(perm);
--        assertThat("Permission \"" + name + "\" was not added", pm.getPermission(name), is(perm));
+-        assertThat(pm.getPermission(name), is(perm), "Permission \"" + name + "\" was not added");
 -        pm.removePermission(name);
--        assertThat("Permission \"" + name + "\" was not removed", pm.getPermission(name), is(nullValue()));
+-        assertThat(pm.getPermission(name), is(nullValue()), "Permission \"" + name + "\" was not removed");
 -    }
 -
 -    private void testRemovePermissionByPermission(final String name) {
 -        final Permission perm = new Permission(name);
 -        pm.addPermission(perm);
--        assertThat("Permission \"" + name + "\" was not added", pm.getPermission(name), is(perm));
+-        assertThat(pm.getPermission(name), is(perm), "Permission \"" + name + "\" was not added");
 -        pm.removePermission(perm);
--        assertThat("Permission \"" + name + "\" was not removed", pm.getPermission(name), is(nullValue()));
+-        assertThat(pm.getPermission(name), is(nullValue()), "Permission \"" + name + "\" was not removed");
 -    }
 -
--    @After
+-    @AfterEach
 -    public void tearDown() {
 -        pm.clearPlugins();
 -        assertThat(pm.getPermissions(), is(empty()));
@@ -2542,3 +2539,17 @@ index a8be3e23e3e280ad301d9530de50028515612966..43b58e920e739bb949ac0673e9ef73ba
  
      @Override
      public FileConfiguration getConfig() {
+diff --git a/src/test/java/org/bukkit/support/TestServer.java b/src/test/java/org/bukkit/support/TestServer.java
+index 73ec679ac0d1f398b417bd174b47f9af93351e27..b208150297a23c0b4acb79135416809718f5650e 100644
+--- a/src/test/java/org/bukkit/support/TestServer.java
++++ b/src/test/java/org/bukkit/support/TestServer.java
+@@ -25,8 +25,7 @@ public final class TestServer {
+         Thread creatingThread = Thread.currentThread();
+         when(instance.isPrimaryThread()).then(mock -> Thread.currentThread().equals(creatingThread));
+ 
+-        PluginManager pluginManager = new SimplePluginManager(instance, new SimpleCommandMap(instance));
+-        when(instance.getPluginManager()).thenReturn(pluginManager);
++        // Paper - remove plugin manager for Paper Plugins
+ 
+         Logger logger = Logger.getLogger(TestServer.class.getCanonicalName());
+         when(instance.getLogger()).thenReturn(logger);

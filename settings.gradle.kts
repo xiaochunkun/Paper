@@ -8,7 +8,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
 }
 
 if (!file(".git").exists()) {
@@ -34,7 +34,7 @@ if (!file(".git").exists()) {
 rootProject.name = "paper"
 
 for (name in listOf("Paper-API", "Paper-Server", "Paper-MojangAPI")) {
-    val projName = name.toLowerCase(Locale.ENGLISH)
+    val projName = name.lowercase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)
 }

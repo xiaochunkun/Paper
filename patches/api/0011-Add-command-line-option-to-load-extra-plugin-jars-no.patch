@@ -7,10 +7,10 @@ Subject: [PATCH] Add command line option to load extra plugin jars not in the
 ex: java -jar paperclip.jar nogui -add-plugin=/path/to/plugin.jar -add-plugin=/path/to/another/plugin_jar.jar
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index ffacdd168e2b68663becfcfc5c917a41f8ec817d..003d1613fb1b5a24146fb3eeba0be7bf5a4eb8b8 100644
+index 8d101352f72fc7fa21e0ba68039c79ce2fb92eb9..b5bdefc93d8614b5efbfd6e4c975275b9b53868c 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -77,6 +77,20 @@ public final class Bukkit {
+@@ -78,6 +78,20 @@ public final class Bukkit {
          return server;
      }
  
@@ -32,10 +32,10 @@ index ffacdd168e2b68663becfcfc5c917a41f8ec817d..003d1613fb1b5a24146fb3eeba0be7bf
       * Attempts to set the {@link Server} singleton.
       * <p>
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index cadf590c7e597a503078892b3d5671642a80eb3f..15b07d05d948d5df21591dc9e1b0fc0232c984ec 100644
+index 3e642d8a0294f7290c3d4310813e6e8a467810e7..d4d87ce99ad757733a0f2dd1a02eb79f4ee7972f 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -62,6 +62,18 @@ import org.jetbrains.annotations.Nullable;
+@@ -63,6 +63,18 @@ import org.jetbrains.annotations.Nullable;
   */
  public interface Server extends PluginMessageRecipient, net.kyori.adventure.audience.ForwardingAudience { // Paper
  

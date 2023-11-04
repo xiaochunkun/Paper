@@ -5,22 +5,22 @@ Subject: [PATCH] Paper Plugins
 
 
 diff --git a/src/main/java/io/papermc/paper/command/PaperCommand.java b/src/main/java/io/papermc/paper/command/PaperCommand.java
-index e7931b6cb2a46d07ac017f620b807e3474dc481e..16fdfda717300a3168c27526470f83ce6239e95f 100644
+index 8ccc59473bac983ced6b9e4a57e0ec4ebd2b0f32..6d06b772ffb9d47d6a717462a4b2b494544e80ae 100644
 --- a/src/main/java/io/papermc/paper/command/PaperCommand.java
 +++ b/src/main/java/io/papermc/paper/command/PaperCommand.java
-@@ -38,6 +38,7 @@ public final class PaperCommand extends Command {
+@@ -37,6 +37,7 @@ public final class PaperCommand extends Command {
+         commands.put(Set.of("entity"), new EntityCommand());
          commands.put(Set.of("reload"), new ReloadCommand());
          commands.put(Set.of("version"), new VersionCommand());
-         commands.put(Set.of("callback"), new CallbackCommand());
 +        commands.put(Set.of("dumpplugins"), new DumpPluginsCommand());
  
          return commands.entrySet().stream()
              .flatMap(entry -> entry.getKey().stream().map(s -> Map.entry(s, entry.getValue())))
 diff --git a/src/main/java/io/papermc/paper/command/PaperCommands.java b/src/main/java/io/papermc/paper/command/PaperCommands.java
-index 6a00f3d38da8107825ab1d405f337fd077b09f72..d44d0074446c1c54e87dc8078dff7fef1d92f343 100644
+index 5e5ec700a368cfdaa1ea0b3f0fa82089895d4b92..72f2e81b9905a0d57ed8e2a88578f62d5235c456 100644
 --- a/src/main/java/io/papermc/paper/command/PaperCommands.java
 +++ b/src/main/java/io/papermc/paper/command/PaperCommands.java
-@@ -23,5 +23,6 @@ public final class PaperCommands {
+@@ -24,5 +24,6 @@ public final class PaperCommands {
          COMMANDS.forEach((s, command) -> {
              server.server.getCommandMap().register(s, "Paper", command);
          });
@@ -597,10 +597,10 @@ index 0000000000000000000000000000000000000000..89bf48fd581ee6580b91e2eb31dd532c
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/bootstrap/PluginBootstrapContextImpl.java b/src/main/java/io/papermc/paper/plugin/bootstrap/PluginBootstrapContextImpl.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..45d6163074c5b4064185a16eb7d9dfe8a94027a4
+index 0000000000000000000000000000000000000000..30b50e6294c6eaade5e17cfaf34600d122e6251c
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/bootstrap/PluginBootstrapContextImpl.java
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,48 @@
 +package io.papermc.paper.plugin.bootstrap;
 +
 +import io.papermc.paper.plugin.configuration.PluginMeta;
@@ -609,10 +609,21 @@ index 0000000000000000000000000000000000000000..45d6163074c5b4064185a16eb7d9dfe8
 +import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 +import org.jetbrains.annotations.NotNull;
 +
-+public record PluginBootstrapContextImpl(PluginMeta config, Path dataFolder,
-+                                         ComponentLogger logger, Path pluginSource) implements BootstrapContext {
++public final class PluginBootstrapContextImpl implements BootstrapContext {
 +
-+    public static PluginBootstrapContextImpl of(PluginProvider<?> provider, Path pluginFolder) {
++    private final PluginMeta config;
++    private final Path dataFolder;
++    private final ComponentLogger logger;
++    private final Path pluginSource;
++
++    public PluginBootstrapContextImpl(PluginMeta config, Path dataFolder, ComponentLogger logger, Path pluginSource) {
++        this.config = config;
++        this.dataFolder = dataFolder;
++        this.logger = logger;
++        this.pluginSource = pluginSource;
++    }
++
++    public static PluginBootstrapContextImpl create(PluginProvider<?> provider, Path pluginFolder) {
 +        Path dataFolder = pluginFolder.resolve(provider.getMeta().getName());
 +
 +        return new PluginBootstrapContextImpl(provider.getMeta(), dataFolder, provider.getLogger(), provider.getSource());
@@ -640,10 +651,10 @@ index 0000000000000000000000000000000000000000..45d6163074c5b4064185a16eb7d9dfe8
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/bootstrap/PluginProviderContextImpl.java b/src/main/java/io/papermc/paper/plugin/bootstrap/PluginProviderContextImpl.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..2d08792a3231c997ea64e66211042bfe371a15b9
+index 0000000000000000000000000000000000000000..ef74ca64c589c9158909a2356e73a23f4f01faa2
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/bootstrap/PluginProviderContextImpl.java
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,49 @@
 +package io.papermc.paper.plugin.bootstrap;
 +
 +import io.papermc.paper.plugin.PluginInitializerManager;
@@ -653,10 +664,21 @@ index 0000000000000000000000000000000000000000..2d08792a3231c997ea64e66211042bfe
 +
 +import java.nio.file.Path;
 +
-+public record PluginProviderContextImpl(PluginMeta config, Path dataFolder,
-+                                        ComponentLogger logger, Path pluginSource) implements PluginProviderContext {
++public final class PluginProviderContextImpl implements PluginProviderContext {
 +
-+    public static PluginProviderContextImpl of(PluginMeta config, ComponentLogger logger, Path pluginSource) {
++    private final PluginMeta config;
++    private final Path dataFolder;
++    private final ComponentLogger logger;
++    private final Path pluginSource;
++
++    public PluginProviderContextImpl(PluginMeta config, Path dataFolder, ComponentLogger logger, Path pluginSource) {
++        this.config = config;
++        this.dataFolder = dataFolder;
++        this.logger = logger;
++        this.pluginSource = pluginSource;
++    }
++
++    public static PluginProviderContextImpl create(PluginMeta config, ComponentLogger logger, Path pluginSource) {
 +        Path dataFolder = PluginInitializerManager.instance().pluginDirectoryPath().resolve(config.getName());
 +
 +        return new PluginProviderContextImpl(config, dataFolder, logger, pluginSource);
@@ -852,10 +874,10 @@ index 0000000000000000000000000000000000000000..f9a2c55a354c877749db3f92956de802
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/entrypoint/classloader/PaperPluginClassLoader.java b/src/main/java/io/papermc/paper/plugin/entrypoint/classloader/PaperPluginClassLoader.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3c83feac2f2f0be56e373463d47d643a5f9ae374
+index 0000000000000000000000000000000000000000..5a00e5c41274ded6b837fb81fa8f54616f2b7bc8
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/entrypoint/classloader/PaperPluginClassLoader.java
-@@ -0,0 +1,206 @@
+@@ -0,0 +1,205 @@
 +package io.papermc.paper.plugin.entrypoint.classloader;
 +
 +import io.papermc.paper.plugin.configuration.PluginMeta;
@@ -1046,7 +1068,6 @@ index 0000000000000000000000000000000000000000..3c83feac2f2f0be56e373463d47d643a
 +            "libraryLoader=" + this.libraryLoader +
 +            ", seenIllegalAccess=" + this.seenIllegalAccess +
 +            ", loadedJavaPlugin=" + this.loadedJavaPlugin +
-+            ", group=" + this.group +
 +            '}';
 +    }
 +
@@ -5126,7 +5147,7 @@ index 0000000000000000000000000000000000000000..7757d7df70e39a6fe4d92d02b6f905a2
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/provider/configuration/serializer/PermissionConfigurationSerializer.java b/src/main/java/io/papermc/paper/plugin/provider/configuration/serializer/PermissionConfigurationSerializer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d1088e4b7fa5f8e689f23b150b83645ce1ae5a0e
+index 0000000000000000000000000000000000000000..f951f4024745503e9cdfa7ff17b9313ac6d7b4c4
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/provider/configuration/serializer/PermissionConfigurationSerializer.java
 @@ -0,0 +1,56 @@
@@ -5171,7 +5192,7 @@ index 0000000000000000000000000000000000000000..d1088e4b7fa5f8e689f23b150b83645c
 +                    try {
 +                        result.add(Permission.loadPermission(entry.getKey().toString(), (Map<?, ?>) entry.getValue(), permissionDefault, result));
 +                    } catch (Throwable ex) {
-+                        throw new SerializationException(null, "Error loading permission %s".formatted(entry.getKey()), ex);
++                        throw new SerializationException((Type) null, "Error loading permission %s".formatted(entry.getKey()), ex);
 +                    }
 +                }
 +            }
@@ -6130,7 +6151,7 @@ index 0000000000000000000000000000000000000000..f2bc4d0b55d4c9877a442529e0b14465
 +}
 diff --git a/src/main/java/io/papermc/paper/plugin/provider/type/paper/PaperPluginProviderFactory.java b/src/main/java/io/papermc/paper/plugin/provider/type/paper/PaperPluginProviderFactory.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1ba051931d3ce6ac0bef559911e4453044266aab
+index 0000000000000000000000000000000000000000..84305ea4bd21acf0ff2415808933552696686ac7
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/provider/type/paper/PaperPluginProviderFactory.java
 @@ -0,0 +1,56 @@
@@ -6162,7 +6183,7 @@ index 0000000000000000000000000000000000000000..1ba051931d3ce6ac0bef559911e44530
 +    public PaperPluginParent build(JarFile file, PaperPluginMeta configuration, Path source) throws Exception {
 +        Logger jul = PaperPluginLogger.getLogger(configuration);
 +        ComponentLogger logger = ComponentLogger.logger(jul.getName());
-+        PluginProviderContext context = PluginProviderContextImpl.of(configuration, logger, source);
++        PluginProviderContext context = PluginProviderContextImpl.create(configuration, logger, source);
 +
 +        PaperClasspathBuilder builder = new PaperClasspathBuilder(context);
 +
@@ -6524,7 +6545,7 @@ index 0000000000000000000000000000000000000000..14ed05945ba5bfeb2b539d4786278b0e
 +
 diff --git a/src/main/java/io/papermc/paper/plugin/storage/BootstrapProviderStorage.java b/src/main/java/io/papermc/paper/plugin/storage/BootstrapProviderStorage.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..31ec730e63adf82bf9ac02331bc7f186b98c35cf
+index 0000000000000000000000000000000000000000..8ef13e4f00a61db0dab9ef63231d77adcfaba5ab
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/plugin/storage/BootstrapProviderStorage.java
 @@ -0,0 +1,58 @@
@@ -6560,7 +6581,7 @@ index 0000000000000000000000000000000000000000..31ec730e63adf82bf9ac02331bc7f186
 +            @Override
 +            public boolean load(PluginProvider<PluginBootstrap> provider, PluginBootstrap provided) {
 +                try {
-+                    BootstrapContext context = PluginBootstrapContextImpl.of(provider, PluginInitializerManager.instance().pluginDirectoryPath());
++                    BootstrapContext context = PluginBootstrapContextImpl.create(provider, PluginInitializerManager.instance().pluginDirectoryPath());
 +                    provided.bootstrap(context);
 +                    return true;
 +                } catch (Throwable e) {
@@ -6926,10 +6947,10 @@ index f7114d5b8f2f93f62883e24da29afaf9f74ee1a6..8bf0630c0e06950cd99b7ae9898137f7
  
          return foundFrame.orElse(null);
 diff --git a/src/main/java/net/minecraft/core/registries/BuiltInRegistries.java b/src/main/java/net/minecraft/core/registries/BuiltInRegistries.java
-index baa88201c4d08fb4f32f1198e187d7ca138b0f0e..7d09adf27da249851cfc87b7916b915240a65a7e 100644
+index bdd3b48e5de2afd6b7655ba6ff742a60ee9540c5..98ef159b7091e53298838ae3723909be6d38b4ba 100644
 --- a/src/main/java/net/minecraft/core/registries/BuiltInRegistries.java
 +++ b/src/main/java/net/minecraft/core/registries/BuiltInRegistries.java
-@@ -319,7 +319,13 @@ public class BuiltInRegistries {
+@@ -323,7 +323,13 @@ public class BuiltInRegistries {
      }
  
      public static void bootStrap() {
@@ -6961,10 +6982,10 @@ index 1eabd8b5a99850298838b11ba97e3d220f444378..8ff786c366332588a2df053438f23cc9
                      Bootstrap.wrapStreams();
                      Bootstrap.bootstrapDuration.set(Duration.between(instant, Instant.now()).toMillis());
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 35e7f8e7b19c217fa5f3f55abb0f8b9cd6b16f18..72c2f0bf9434e09a0dd51294d3a2200f1e0ed1b1 100644
+index 9cfdd5d8c1650d9c9bdfbc07980239e507ff942d..ae0b713870976d4b1e469a90cef9b2e282dbcaab 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -122,6 +122,7 @@ public class Main {
+@@ -130,6 +130,7 @@ public class Main {
                  JvmProfiler.INSTANCE.start(Environment.SERVER);
              }
  
@@ -6973,10 +6994,10 @@ index 35e7f8e7b19c217fa5f3f55abb0f8b9cd6b16f18..72c2f0bf9434e09a0dd51294d3a2200f
              Bootstrap.validate();
              Util.startTimerHackThread();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 182c3a3852726172dfe97f2b989323001c6efad8..1dc5dc35830437a8511b6fbaf96201ea7228aa59 100644
+index 8461cf5f99144edce646909a41208f702f1e2aff..e17ad4a7f7adcf7d54bcfa56dbb109fc5611574a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -269,7 +269,8 @@ public final class CraftServer implements Server {
+@@ -274,7 +274,8 @@ public final class CraftServer implements Server {
      private final CraftCommandMap commandMap = new CraftCommandMap(this);
      private final SimpleHelpMap helpMap = new SimpleHelpMap(this);
      private final StandardMessenger messenger = new StandardMessenger();
@@ -6986,13 +7007,13 @@ index 182c3a3852726172dfe97f2b989323001c6efad8..1dc5dc35830437a8511b6fbaf96201ea
      private final StructureManager structureManager;
      protected final DedicatedServer console;
      protected final DedicatedPlayerList playerList;
-@@ -419,24 +420,7 @@ public final class CraftServer implements Server {
+@@ -426,24 +427,7 @@ public final class CraftServer implements Server {
      }
  
      public void loadPlugins() {
 -        this.pluginManager.registerInterface(JavaPluginLoader.class);
 -
--        File pluginFolder = (File) console.options.valueOf("plugins");
+-        File pluginFolder = (File) this.console.options.valueOf("plugins");
 -
 -        if (pluginFolder.exists()) {
 -            Plugin[] plugins = this.pluginManager.loadPlugins(pluginFolder);
@@ -7012,7 +7033,7 @@ index 182c3a3852726172dfe97f2b989323001c6efad8..1dc5dc35830437a8511b6fbaf96201ea
      }
  
      public void enablePlugins(PluginLoadOrder type) {
-@@ -525,15 +509,17 @@ public final class CraftServer implements Server {
+@@ -532,15 +516,17 @@ public final class CraftServer implements Server {
      private void enablePlugin(Plugin plugin) {
          try {
              List<Permission> perms = plugin.getDescription().getPermissions();
@@ -7036,7 +7057,7 @@ index 182c3a3852726172dfe97f2b989323001c6efad8..1dc5dc35830437a8511b6fbaf96201ea
  
              this.pluginManager.enablePlugin(plugin);
          } catch (Throwable ex) {
-@@ -951,6 +937,7 @@ public final class CraftServer implements Server {
+@@ -966,6 +952,7 @@ public final class CraftServer implements Server {
                  "This plugin is not properly shutting down its async tasks when it is being reloaded.  This may cause conflicts with the newly loaded version of the plugin"
              ));
          }
@@ -7062,10 +7083,10 @@ index 909b2c98e7a9117d2f737245e4661792ffafb744..d96399e9bf1a58db5a4a22e58abb99e7
      @Override
      public FileConfiguration getConfig() {
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 0137b414a75894cb8b8413f96eba4f591453f61b..39a9a47ce7150445e1b00a32152c0429b3114302 100644
+index da7bc4cfde594dba68dfc644b49748b4865f7d89..1c70aa4475bb43aba2f66eedabd4d1f5c5ae3409 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -439,6 +439,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -424,6 +424,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
          net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
          return nmsItemStack.getItem().getDescriptionId(nmsItemStack);
      }
@@ -7253,14 +7274,14 @@ index 0000000000000000000000000000000000000000..1d14f530ef888102e47eeeaf0d1a6076
 +}
 diff --git a/src/test/java/io/papermc/paper/plugin/PluginDependencyValidationTest.java b/src/test/java/io/papermc/paper/plugin/PluginDependencyValidationTest.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e08a22a753aba0c83894db7216a50724a9393dfa
+index 0000000000000000000000000000000000000000..ad92ae93acd25af4d223a55a0bcbc2a5740390a9
 --- /dev/null
 +++ b/src/test/java/io/papermc/paper/plugin/PluginDependencyValidationTest.java
 @@ -0,0 +1,59 @@
 +package io.papermc.paper.plugin;
 +
 +import io.papermc.paper.plugin.entrypoint.dependency.MetaDependencyTree;
-+import org.junit.Test;
++import org.junit.jupiter.api.Test;
 +
 +import java.util.List;
 +
@@ -7318,7 +7339,7 @@ index 0000000000000000000000000000000000000000..e08a22a753aba0c83894db7216a50724
 +}
 diff --git a/src/test/java/io/papermc/paper/plugin/PluginLoadOrderTest.java b/src/test/java/io/papermc/paper/plugin/PluginLoadOrderTest.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318432e4742
+index 0000000000000000000000000000000000000000..a66fd32cf8af310101161c1b820b3468657460f0
 --- /dev/null
 +++ b/src/test/java/io/papermc/paper/plugin/PluginLoadOrderTest.java
 @@ -0,0 +1,148 @@
@@ -7330,9 +7351,9 @@ index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318
 +import io.papermc.paper.plugin.entrypoint.strategy.modern.ModernPluginLoadingStrategy;
 +import io.papermc.paper.plugin.entrypoint.strategy.ProviderConfiguration;
 +import io.papermc.paper.plugin.provider.PluginProvider;
-+import org.junit.Assert;
-+import org.junit.Before;
-+import org.junit.Test;
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
 +
 +import java.util.ArrayList;
 +import java.util.HashMap;
@@ -7413,7 +7434,7 @@ index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318
 +        setup("RedFire", new String[]{"BrightBlueGrass", "BigPaper"}, new String[]{"BlueFire", "GreenGlass", "BigGrass"}, EMPTY);
 +    }
 +
-+    @Before
++    @BeforeEach
 +    public void loadProviders() {
 +        AtomicInteger currentLoad = new AtomicInteger();
 +        ModernPluginLoadingStrategy<PaperTestPlugin> modernPluginLoadingStrategy = new ModernPluginLoadingStrategy<>(new ProviderConfiguration<>() {
@@ -7437,16 +7458,16 @@ index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318
 +        for (PluginProvider<PaperTestPlugin> provider : REGISTERED_PROVIDERS) {
 +            TestPluginMeta pluginMeta = (TestPluginMeta) provider.getMeta();
 +            String identifier = pluginMeta.getName();
-+            Assert.assertTrue("Provider wasn't loaded! (%s)".formatted(identifier), LOAD_ORDER.containsKey(identifier));
++            Assertions.assertTrue(LOAD_ORDER.containsKey(identifier), "Provider wasn't loaded! (%s)".formatted(identifier));
 +
 +            int index = LOAD_ORDER.get(identifier);
 +
 +            // Hard dependencies should be loaded BEFORE
 +            for (String hardDependency : pluginMeta.getPluginDependencies()) {
-+                Assert.assertTrue("Plugin (%s) is missing hard dependency (%s)".formatted(identifier, hardDependency), LOAD_ORDER.containsKey(hardDependency));
++                Assertions.assertTrue(LOAD_ORDER.containsKey(hardDependency), "Plugin (%s) is missing hard dependency (%s)".formatted(identifier, hardDependency));
 +
 +                int dependencyIndex = LOAD_ORDER.get(hardDependency);
-+                Assert.assertTrue("Plugin (%s) was not loaded BEFORE soft dependency. (%s)".formatted(identifier, hardDependency), index > dependencyIndex);
++                Assertions.assertTrue(index > dependencyIndex, "Plugin (%s) was not loaded BEFORE soft dependency. (%s)".formatted(identifier, hardDependency));
 +            }
 +
 +            for (String softDependency : pluginMeta.getPluginSoftDependencies()) {
@@ -7456,7 +7477,7 @@ index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318
 +
 +                int dependencyIndex = LOAD_ORDER.get(softDependency);
 +
-+                Assert.assertTrue("Plugin (%s) was not loaded BEFORE soft dependency. (%s)".formatted(identifier, softDependency), index > dependencyIndex);
++                Assertions.assertTrue(index > dependencyIndex, "Plugin (%s) was not loaded BEFORE soft dependency. (%s)".formatted(identifier, softDependency));
 +            }
 +
 +            for (String loadBefore : pluginMeta.getLoadBeforePlugins()) {
@@ -7465,14 +7486,14 @@ index 0000000000000000000000000000000000000000..9d393aca5e2de4d046dc1a1232d57318
 +                }
 +
 +                int dependencyIndex = LOAD_ORDER.get(loadBefore);
-+                Assert.assertTrue("Plugin (%s) was NOT loaded BEFORE loadbefore dependency. (%s)".formatted(identifier, loadBefore), index < dependencyIndex);
++                Assertions.assertTrue(index < dependencyIndex, "Plugin (%s) was NOT loaded BEFORE loadbefore dependency. (%s)".formatted(identifier, loadBefore));
 +            }
 +        }
 +    }
 +}
 diff --git a/src/test/java/io/papermc/paper/plugin/PluginManagerTest.java b/src/test/java/io/papermc/paper/plugin/PluginManagerTest.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..726eba26470e62b0e94a91418512e242464800ae
+index 0000000000000000000000000000000000000000..b7d69dda2b88218221a3cca6db4445cb58aa0179
 --- /dev/null
 +++ b/src/test/java/io/papermc/paper/plugin/PluginManagerTest.java
 @@ -0,0 +1,75 @@
@@ -7483,8 +7504,8 @@ index 0000000000000000000000000000000000000000..726eba26470e62b0e94a91418512e242
 +import org.bukkit.permissions.Permission;
 +import org.bukkit.plugin.PluginManager;
 +import org.bukkit.support.AbstractTestingBase;
-+import org.junit.After;
-+import org.junit.Test;
++import org.junit.jupiter.api.AfterEach;
++import org.junit.jupiter.api.Test;
 +
 +import static org.hamcrest.MatcherAssert.assertThat;
 +import static org.hamcrest.Matchers.*;
@@ -7545,7 +7566,7 @@ index 0000000000000000000000000000000000000000..726eba26470e62b0e94a91418512e242
 +        assertThat("Permission \"" + name + "\" was not removed", pm.getPermission(name), is(nullValue()));
 +    }
 +
-+    @After
++    @AfterEach
 +    public void tearDown() {
 +        pm.clearPlugins();
 +        assertThat(pm.getPermissions(), is(empty()));
@@ -7553,15 +7574,15 @@ index 0000000000000000000000000000000000000000..726eba26470e62b0e94a91418512e242
 +}
 diff --git a/src/test/java/io/papermc/paper/plugin/PluginNamingTest.java b/src/test/java/io/papermc/paper/plugin/PluginNamingTest.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..860a2bc8200cf41b216a2e37cfbd2f5464d6542c
+index 0000000000000000000000000000000000000000..6c3be5b84ae245652261668a52ce49934ef200a9
 --- /dev/null
 +++ b/src/test/java/io/papermc/paper/plugin/PluginNamingTest.java
 @@ -0,0 +1,28 @@
 +package io.papermc.paper.plugin;
 +
 +import io.papermc.paper.plugin.provider.configuration.PaperPluginMeta;
-+import org.junit.Assert;
-+import org.junit.Test;
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.Test;
 +
 +public class PluginNamingTest {
 +    private static final String TEST_NAME = "Test_Plugin";
@@ -7577,17 +7598,17 @@ index 0000000000000000000000000000000000000000..860a2bc8200cf41b216a2e37cfbd2f54
 +
 +    @Test
 +    public void testName() {
-+        Assert.assertEquals(TEST_NAME, this.pluginMeta.getName());
++        Assertions.assertEquals(TEST_NAME, this.pluginMeta.getName());
 +    }
 +
 +    @Test
 +    public void testDisplayName() {
-+        Assert.assertEquals(TEST_NAME + " v" + TEST_VERSION, this.pluginMeta.getDisplayName());
++        Assertions.assertEquals(TEST_NAME + " v" + TEST_VERSION, this.pluginMeta.getDisplayName());
 +    }
 +}
 diff --git a/src/test/java/io/papermc/paper/plugin/SyntheticEventTest.java b/src/test/java/io/papermc/paper/plugin/SyntheticEventTest.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..51c08740edffd152c8e2b6d3676ff7f1ce6090c6
+index 0000000000000000000000000000000000000000..2a7408ed5d9a415333212cadd7fefcd03785afbf
 --- /dev/null
 +++ b/src/test/java/io/papermc/paper/plugin/SyntheticEventTest.java
 @@ -0,0 +1,42 @@
@@ -7598,8 +7619,8 @@ index 0000000000000000000000000000000000000000..51c08740edffd152c8e2b6d3676ff7f1
 +import org.bukkit.event.Event;
 +import org.bukkit.event.EventHandler;
 +import org.bukkit.event.Listener;
-+import org.junit.Assert;
-+import org.junit.Test;
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.Test;
 +
 +public class SyntheticEventTest {
 +
@@ -7614,7 +7635,7 @@ index 0000000000000000000000000000000000000000..51c08740edffd152c8e2b6d3676ff7f1
 +        paperPluginManager.registerEvents(impl, paperTestPlugin);
 +        paperPluginManager.callEvent(event);
 +
-+        Assert.assertEquals(1, impl.callCount);
++        Assertions.assertEquals(1, impl.callCount);
 +    }
 +
 +    public abstract static class Base<E extends Event> implements Listener {
@@ -7870,16 +7891,16 @@ index 0000000000000000000000000000000000000000..ba271c35eb2804f94cfc893bf94affb9
 +        return "null";
 +    }
 +}
-diff --git a/src/test/java/io/papermc/paper/testing/DummyServer.java b/src/test/java/io/papermc/paper/testing/DummyServer.java
-index e944e9dca13883c57e93e480ae5adfe51c342532..f482cb4dc5394de3cf88b4c4e13c18f9c61caf45 100644
---- a/src/test/java/io/papermc/paper/testing/DummyServer.java
-+++ b/src/test/java/io/papermc/paper/testing/DummyServer.java
-@@ -58,7 +58,7 @@ public final class DummyServer {
-             return new LazyRegistry(() -> CraftRegistry.createRegistry(invocation.getArgument(0, Class.class), AbstractTestingBase.REGISTRY_CUSTOM));
-         });
+diff --git a/src/test/java/org/bukkit/support/DummyServer.java b/src/test/java/org/bukkit/support/DummyServer.java
+index efa4452cd20231051cdac1b497d7bfafb72bed78..1f6f055805454d7c0f726c9feef57578482c003a 100644
+--- a/src/test/java/org/bukkit/support/DummyServer.java
++++ b/src/test/java/org/bukkit/support/DummyServer.java
+@@ -42,7 +42,7 @@ public final class DummyServer {
+             final Thread currentThread = Thread.currentThread();
+             when(instance.isPrimaryThread()).thenAnswer(ignored -> Thread.currentThread().equals(currentThread));
  
--        final PluginManager pluginManager = new SimplePluginManager(dummyServer, new SimpleCommandMap(dummyServer));
-+        final PluginManager pluginManager = new  io.papermc.paper.plugin.manager.PaperPluginManagerImpl(dummyServer, new SimpleCommandMap(dummyServer), null);
-         when(dummyServer.getPluginManager()).thenReturn(pluginManager);
+-            final org.bukkit.plugin.PluginManager pluginManager = new org.bukkit.plugin.SimplePluginManager(instance, new org.bukkit.command.SimpleCommandMap(instance));
++            final org.bukkit.plugin.PluginManager pluginManager = new  io.papermc.paper.plugin.manager.PaperPluginManagerImpl(instance, new org.bukkit.command.SimpleCommandMap(instance), null);
+             when(instance.getPluginManager()).thenReturn(pluginManager);
+             // paper end - testing additions
  
-         Bukkit.setServer(dummyServer);
