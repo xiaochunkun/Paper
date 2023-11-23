@@ -6,25 +6,21 @@ Subject: [PATCH] Add Position
 
 diff --git a/src/main/java/io/papermc/paper/math/BlockPosition.java b/src/main/java/io/papermc/paper/math/BlockPosition.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f0fdabce4af640da2a406412e67020761ded3ac1
+index 0000000000000000000000000000000000000000..91c22b1a2bc98f9bd1184cfcdef2dfa56ddc2940
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/math/BlockPosition.java
-@@ -0,0 +1,98 @@
+@@ -0,0 +1,94 @@
 +package io.papermc.paper.math;
 +
 +import org.bukkit.Axis;
 +import org.bukkit.block.BlockFace;
-+import org.jetbrains.annotations.ApiStatus;
 +import org.jetbrains.annotations.Contract;
 +import org.jetbrains.annotations.NotNull;
 +
 +/**
 + * A position represented with integers.
-+ * <p>
-+ * <b>May see breaking changes until Experimental annotation is removed.</b>
 + * @see FinePosition
 + */
-+@ApiStatus.Experimental
 +public interface BlockPosition extends Position {
 +
 +    @Override
@@ -120,24 +116,19 @@ index 0000000000000000000000000000000000000000..eb5a3f26c7ba56c6715827f52c0013a8
 +}
 diff --git a/src/main/java/io/papermc/paper/math/FinePosition.java b/src/main/java/io/papermc/paper/math/FinePosition.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d8df70d731573cf2446044925f218876d62fd7cf
+index 0000000000000000000000000000000000000000..688c32f0ed68647996a361a439ce28ec51e5a2fe
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/math/FinePosition.java
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,51 @@
 +package io.papermc.paper.math;
 +
 +import org.bukkit.util.NumberConversions;
-+import org.bukkit.util.Vector;
-+import org.jetbrains.annotations.ApiStatus;
 +import org.jetbrains.annotations.NotNull;
 +
 +/**
 + * A position represented with doubles.
-+ * <p>
-+ * <b>May see breaking changes until Experimental annotation is removed.</b>
 + * @see BlockPosition
 + */
-+@ApiStatus.Experimental
 +public interface FinePosition extends Position {
 +
 +    @Override
@@ -192,25 +183,21 @@ index 0000000000000000000000000000000000000000..93476aaf8d21efb5a30b6d2cc2eeda81
 +}
 diff --git a/src/main/java/io/papermc/paper/math/Position.java b/src/main/java/io/papermc/paper/math/Position.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..26bc5a0fa67855af87c8fd4cd8229b4d9f242740
+index 0000000000000000000000000000000000000000..f283eea2942bf688e5ff15670205dafa9c7ab99f
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/math/Position.java
-@@ -0,0 +1,191 @@
+@@ -0,0 +1,187 @@
 +package io.papermc.paper.math;
 +
 +import org.bukkit.Location;
 +import org.bukkit.World;
 +import org.bukkit.util.Vector;
-+import org.jetbrains.annotations.ApiStatus;
 +import org.jetbrains.annotations.Contract;
 +import org.jetbrains.annotations.NotNull;
 +
 +/**
 + * Common interface for {@link FinePosition} and {@link BlockPosition}.
-+ * <p>
-+ * <b>May see breaking changes until Experimental annotation is removed.</b>
 + */
-+@ApiStatus.Experimental
 +public interface Position {
 +
 +    FinePosition FINE_ZERO = new FinePositionImpl(0, 0, 0);

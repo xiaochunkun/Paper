@@ -5,10 +5,10 @@ Subject: [PATCH] Add Player Warden Warning API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index ae1882f58dcc55c51757fa385effd329d348b896..bd35d2da3ef437e7025ea86265ebcc693399ac83 100644
+index 9120c73e2e66f2ed4814dab36bd1523fb1e31caf..52aeca7a461f3b141417b700b3b425a807918961 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -3141,6 +3141,59 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -3137,6 +3137,59 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param silent whether sound should be silenced
       */
      void showElderGuardian(boolean silent);
